@@ -7,4 +7,3 @@ public class Principal {
 		miAplicacion.iniciarSistema();
 	}
 }
-// mejorando practica

@@ -3,6 +3,7 @@ package Vista;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox; // Importar JComboBox
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,7 +15,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
     private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername;
     private JButton btonCancelar, btonConsultar, btonActualizar, btonEliminar, btonRegistrar;
-    private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario, campoTipo, campoUsername;
+    private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario;
+    private JComboBox<String> campoTipo; // Cambiar a JComboBox
+    private JTextField campoUsername;
     private javax.swing.JPanel panelConsulta;
     private javax.swing.JSeparator separadorInferior, separadorSuperior;
     private Coordinador miCoordinador;
@@ -46,7 +49,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoTelefono = new javax.swing.JTextField();
         campoProfesion = new javax.swing.JTextField();
         campoEdad = new javax.swing.JTextField();
-        campoTipo = new javax.swing.JTextField();
+        campoTipo = new JComboBox<>(new String[]{"Administrador", "Usuario", "Secretaria"}); // Inicializar JComboBox
         campoUsername = new javax.swing.JTextField();
         separadorSuperior = new javax.swing.JSeparator();
         btonCancelar = new javax.swing.JButton();
@@ -138,7 +141,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         panelConsulta.add(campoPassword);
         campoPassword.setBounds(510, 130, 170, 20);
         panelConsulta.add(campoTipo);
-        campoTipo.setBounds(100, 250, 300, 20);
+        campoTipo.setBounds(100, 250, 300, 20); // Mantiene la posición
         panelConsulta.add(campoUsername);
         campoUsername.setBounds(510, 160, 170, 20);
         panelConsulta.add(separadorSuperior);
@@ -197,7 +200,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
 
         if (e.getSource() == btonActualizar) {
-
             actualizaUsuario();
         }
 
@@ -214,7 +216,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 btonEliminar.setVisible(true);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
-
                 break;
             case 2: // Usuario
                 btonActualizar.setVisible(true);
@@ -222,6 +223,10 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 btonEliminar.setVisible(false);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
+                campoTipo.setVisible(false);
+                labelTipo.setVisible(false);
+
+
                 break;
             case 3: // Secretaria
                 btonActualizar.setVisible(false);
@@ -235,9 +240,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
     }
 
-
-
-
     private void limpiarVentana() {
         campoNombre.setText("");
         campoDocumento.setText("");
@@ -247,7 +249,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoDireccion.setText("");
         campoTelefono.setText("");
         campoEdad.setText("");
-        campoTipo.setText("");
+        campoTipo.setSelectedIndex(0); // Reiniciar a la primera opción
         campoUsername.setText("");
     }
 
@@ -267,7 +269,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             campoTelefono.setText(usuarioVO.getTelefono());
             campoEdad.setText(String.valueOf(usuarioVO.getEdad()));
             campoPassword.setText(usuarioVO.getPassword());
-            campoTipo.setText(String.valueOf(usuarioVO.getTipo()));
+            campoTipo.setSelectedIndex(usuarioVO.getTipo() - 1); // Ajustar índice para JComboBox
             campoUsername.setText(usuarioVO.getUsername());
         } else {
             JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado en el sistema",
@@ -275,13 +277,8 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
     }
 
-
     private void actualizaUsuario() {
-
         Integer edad = miCoordinador.validarEdad(Integer.parseInt(campoEdad.getText().trim()));
-
-
-
         if (edad != null) {
             UsuarioVo miUsuarioVo = new UsuarioVo();
             miUsuarioVo.setDocumento(campoDocumento.getText().trim());
@@ -291,7 +288,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             miUsuarioVo.setTelefono(campoTelefono.getText().trim());
             miUsuarioVo.setDireccion(campoDireccion.getText().trim());
             miUsuarioVo.setPassword(campoPassword.getText().trim());
-            miUsuarioVo.setTipo(Integer.parseInt(campoTipo.getText().trim()));
+            miUsuarioVo.setTipo(campoTipo.getSelectedIndex() + 1); // Obtener el tipo del JComboBox
             miUsuarioVo.setUsername(campoUsername.getText().trim());
 
             String actualiza = miCoordinador.validarCampos(miUsuarioVo) ?
@@ -309,7 +306,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
         limpiarVentana();
     }
-
 
     private void eliminaUsuario() {
         String documento = campoDocumento.getText().trim();
@@ -340,7 +336,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         nuevoUsuario.setTelefono(campoTelefono.getText().trim());
         nuevoUsuario.setDireccion(campoDireccion.getText().trim());
         nuevoUsuario.setPassword(campoPassword.getText().trim());
-        nuevoUsuario.setTipo(Integer.parseInt(campoTipo.getText().trim()));
+        nuevoUsuario.setTipo(campoTipo.getSelectedIndex() + 1); // Obtener el tipo del JComboBox
         nuevoUsuario.setUsername(campoUsername.getText().trim());
 
         String resultado = miCoordinador.registrarUsuario(nuevoUsuario);

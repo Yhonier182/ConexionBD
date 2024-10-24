@@ -74,7 +74,7 @@ public class UsuarioDao {
 
 		connection = miConexion.getConnection();
 
-		String consulta = "SELECT * FROM usuario WHERE username = ? AND password = ?";
+		String consulta = "SELECT * FROM usuario WHERE username = ? AND password = ? AND estado = true";
 		try {
 			if (connection != null) {
 				statement = connection.prepareStatement(consulta);
@@ -104,6 +104,7 @@ public class UsuarioDao {
 
 		return miUsuario;
 	}
+
 
 
 	public UsuarioVo buscarUsuarioPorDocumento(String documento) {
@@ -207,6 +208,54 @@ public class UsuarioDao {
 		}
 		return resp;
 	}
+
+
+
+	public String inactivarUsuario(String documento) {
+		String resultado = "";
+		Connection connection = null;
+		Conexion miConexion = new Conexion();
+		connection = miConexion.getConnection();
+		try {
+			String consulta = "UPDATE usuario SET estado= false WHERE documento = ?";
+			PreparedStatement preStatement = connection.prepareStatement(consulta);
+			preStatement.setString(1, documento);
+			preStatement.executeUpdate();
+			resultado = "ok";
+		} catch (SQLException e) {
+			System.out.println("Error al inactivar el usuario: " + e.getMessage());
+			resultado = "error";
+		} finally {
+			if (connection != null) {
+				miConexion.desconectar();
+			}
+		}
+		return resultado;
+	}
+
+
+	public String activarUsuario(String documento) {
+		String resultado = "";
+		Connection connection = null;
+		Conexion miConexion = new Conexion();
+		connection = miConexion.getConnection();
+		try {
+			String consulta = "UPDATE usuario SET estado = true WHERE documento = ?";
+			PreparedStatement preStatement = connection.prepareStatement(consulta);
+			preStatement.setString(1, documento);
+			preStatement.executeUpdate();
+			resultado = "ok";
+		} catch (SQLException e) {
+			System.out.println("Error al activar el usuario: " + e.getMessage());
+			resultado = "error";
+		} finally {
+			if (connection != null) {
+				miConexion.desconectar();
+			}
+		}
+		return resultado;
+	}
+
 
 
 

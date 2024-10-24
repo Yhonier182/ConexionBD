@@ -1,6 +1,5 @@
 package Controlador;
 
-
 import Dao.ProductoDao;
 import Dao.UsuarioDao;
 import Modelo.Logica;
@@ -8,27 +7,21 @@ import Vista.*;
 
 public class Aplicacion {
 
-
-
-	public void iniciarSistema(){
-
-
+	public void iniciarSistema() {
 		// Instanciamos las clases únicas
 		VentanaPrincipal miVentana = new VentanaPrincipal();
 		VentanaLogin miLogin = new VentanaLogin(miVentana, true);
 
-
 		// Instancia de Coordinador
 		Coordinador miCoordinador = new Coordinador();
 
-		// Instancia de Logica
 		Logica miLogica = new Logica();
 
 		// Ventanas adicionales
 		VentanaConsultaIndividual miVentanaConsultaIndividual = new VentanaConsultaIndividual(miVentana, true);
+		InactivarUsuarioUI miInactivarUsuarioUI = new InactivarUsuarioUI();
 
 
-		// Instancia de Dao's
 		UsuarioDao miUsuarioDao = new UsuarioDao();
 		ProductoDao miProductoDao = new ProductoDao();
 
@@ -39,23 +32,16 @@ public class Aplicacion {
 		miVentanaConsultaIndividual.setCoordinador(miCoordinador);
 		miUsuarioDao.setCoordinador(miCoordinador);
 
-
-
-
 		// Relacionamos el Coordinador con las clases
 		miCoordinador.setVentanaPrincipal(miVentana);
 		miCoordinador.setVentanaLogin(miLogin);
 		miCoordinador.setLogica(miLogica);
-
 		miCoordinador.setVentanaConsultaIndividual(miVentanaConsultaIndividual);
 		miCoordinador.setUsuarioDao(miUsuarioDao);
-
-
+		miCoordinador.setInactivarUsuarioUI(miInactivarUsuarioUI);
 
 		// Mostramos las ventanas
 		miLogin.setVisible(true);
 		miVentana.setVisible(true);
 	}
-
-
 }

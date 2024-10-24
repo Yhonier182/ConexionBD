@@ -74,7 +74,6 @@ public class Logica {
 	public boolean validarCampos(UsuarioVo miUsuarioVo) {
 		boolean validarUsername = false;
 		boolean validarPassword = false;
-		boolean validarDocumento = false;
 
 		String password = miUsuarioVo.getPassword();
 		String username = miUsuarioVo.getUsername();
@@ -88,11 +87,8 @@ public class Logica {
 			validarUsername = true;
 		}
 
-		if (documento != null && !documento.equals("")) {
-			validarDocumento = true;
-		}
 
-		return validarPassword && validarUsername && validarDocumento;
+		return validarPassword && validarUsername ;
 	}
 
 

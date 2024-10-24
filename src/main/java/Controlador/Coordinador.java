@@ -3,13 +3,8 @@ package Controlador;
 import Dao.ProductoDao;
 import Dao.UsuarioDao;
 import Modelo.Logica;
-import Modelo.Productos;
 import Modelo.UsuarioVo;
 import Vista.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Coordinador {
 
@@ -21,10 +16,12 @@ public class Coordinador {
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
     private VistaProductos productos;
+    private InactivarUsuarioUI inactivarUsuarioUI;
 
 
-
-
+    public Coordinador() {
+        this.miUsuarioDao = new UsuarioDao();
+    }
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
         this.miVentana = miVentana;
@@ -34,12 +31,41 @@ public class Coordinador {
         this.miLogin = miLogin;
     }
 
-
-
     public void setLogica(Logica miLogica) {
         this.miLogica = miLogica;
     }
 
+    public void setVentanaConsultaIndividual(VentanaConsultaIndividual miVentanaConsultaIndividual) {
+        this.miVentanaConsultaIndividual = miVentanaConsultaIndividual;
+    }
+
+    public void setUsuarioDao(UsuarioDao miUsuarioDao) {
+        this.miUsuarioDao = miUsuarioDao;
+    }
+
+    public void setInactivarUsuarioUI(InactivarUsuarioUI inactivarUsuarioUI) {
+        this.inactivarUsuarioUI = inactivarUsuarioUI;
+    }
+
+    // Métodos para mostrar ventanas
+    public void mostrarLogin() {
+        miLogin.limpiar();
+        miLogin.setVisible(true);
+    }
+
+    public void mostrarVentanaConsulta() {
+        miVentanaConsultaIndividual.setVisible(true);
+    }
+
+    public void mostrarVentanaInactivacion() {
+        if (inactivarUsuarioUI != null) {
+            inactivarUsuarioUI.setVisible(true);
+        } else {
+            System.err.println("La ventana de inactivación no está inicializada.");
+        }
+    }
+
+    // Métodos de validación y manipulación de usuarios
     public String validarIngreso(int index, String username, String password) {
         return miLogica.validarIngreso(index, username, password);
     }
@@ -51,30 +77,6 @@ public class Coordinador {
     public void asignarPrivilegios(int index, String usuario) {
         miVentana.asignarPrivilegios(index, usuario);
         miVentanaConsultaIndividual.asignarPrivilegios(index, usuario);
-
-
-    }
-
-    public void mostrarLogin() {
-        miLogin.limpiar();
-        miLogin.setVisible(true);
-    }
-
-
-
-    public void setVentanaConsultaIndividual(VentanaConsultaIndividual miVentanaConsultaIndividual) {
-        this.miVentanaConsultaIndividual = miVentanaConsultaIndividual;
-    }
-
-
-
-    public void mostrarVentanaConsulta() {
-        miVentanaConsultaIndividual.setVisible(true);
-    }
-
-
-    public void setUsuarioDao(UsuarioDao miUsuarioDao) {
-        this.miUsuarioDao = miUsuarioDao;
     }
 
     public String registrarUsuario(UsuarioVo miUsuarioVo) {
@@ -89,8 +91,8 @@ public class Coordinador {
         return miLogica.validarEdad(edadIngresada);
     }
 
-    public Modelo.UsuarioVo consultarUsuario(String username, String password ) {
-        return miUsuarioDao.consultarUsuario(username,password);
+    public UsuarioVo consultarUsuario(String username, String password) {
+        return miUsuarioDao.consultarUsuario(username, password);
     }
 
     public String actualizaUsuario(UsuarioVo miUsuarioVo) {
@@ -105,11 +107,16 @@ public class Coordinador {
         return miLogica.validarTipo(tipoIngresado);
     }
 
-
     public UsuarioVo buscarUsuarioPorDocumento(String documento) {
         return miUsuarioDao.buscarUsuarioPorDocumento(documento);
     }
 
+    // Métodos para activar o inactivar usuarios
+    public String inactivarUsuario(String documento) {
+        return miUsuarioDao.inactivarUsuario(documento);
+    }
 
-
+    public String activarUsuario(String documento) {
+        return miUsuarioDao.activarUsuario(documento);
+    }
 }

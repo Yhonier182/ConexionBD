@@ -26,8 +26,8 @@ public class UsuarioDao {
 		PreparedStatement preStatement = null;
 
 		connection = conexion.getConnection();
-		String consulta = "INSERT INTO usuario (documento, nombre, profesion, edad, direccion, telefono, tipo, password, username, estado)"
-				+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
+		String consulta = "INSERT INTO usuario (documento, nombre, profesion, edad, direccion, telefono, tipo, password, username)"
+				+ " VALUES (?,?,?,?,?,?,?,?,?)";
 
 		try {
 			preStatement = connection.prepareStatement(consulta);
@@ -40,7 +40,7 @@ public class UsuarioDao {
 			preStatement.setInt(7, miUsuarioVo.getTipo());
 			preStatement.setString(8, miUsuarioVo.getPassword());
 			preStatement.setString(9, miUsuarioVo.getUsername());
-			preStatement.setInt(10, miUsuarioVo.getEstado());
+
 			preStatement.execute();
 
 			resultado = "ok";
@@ -142,13 +142,14 @@ public class UsuarioDao {
 		} finally {
 			miConexion.desconectar();
 		}
-
 		return miUsuario;
 	}
 
 
 
 	public String actualizaUsuario(UsuarioVo miUsuarioVo) {
+
+		//crear  logica si el documento es igual al
 		String resultado = "";
 		Connection connection = null;
 		Conexion miConexion = new Conexion();
@@ -181,6 +182,9 @@ public class UsuarioDao {
 		return resultado;
 	}
 
+
+
+
 	public String eliminarUsuario(String documento) {
 		Connection connection = null;
 		Conexion miConexion = new Conexion();
@@ -205,4 +209,8 @@ public class UsuarioDao {
 		}
 		return resp;
 	}
+
+
+
+
 }

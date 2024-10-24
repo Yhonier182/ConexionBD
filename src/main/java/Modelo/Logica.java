@@ -15,7 +15,7 @@ public class Logica {
 		this.miCoordinador = miCoordinador;
 	}
 
-	// Método para validar el ingreso de los diferentes perfiles
+
 	public String validarIngreso(int index, String username, String password) {
 		String retorno = "";
 
@@ -35,49 +35,50 @@ public class Logica {
 		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
 
 		if (miUsuarioVo != null) {
-			return miUsuarioVo.getNombre(); // Usuario activo
+			return miUsuarioVo.getNombre();
 		} else {
-			return "desconectado"; // Usuario no encontrado
+			return "desconectado";
 		}
 	}
 
-	// Método para validar el login de un administrador
 	private String validarLoginAdministrador(String username, String password) {
 		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
 
 		if (miUsuarioVo != null && miUsuarioVo.getTipo() == ADMINISTRADOR) {
 			if (password.equals(miUsuarioVo.getPassword())) {
-				return miUsuarioVo.getNombre(); // Login exitoso
+				return miUsuarioVo.getNombre();
 			} else {
-				return "invalido"; // Contraseña incorrecta
+				return "invalido";
 			}
 		} else {
-			return "desconectado"; // Usuario no encontrado o no es administrador
+			return "desconectado";
 		}
 	}
 
-	// Método para validar el login de una secretaria
+
 	private String validarLoginSecretaria(String username, String password) {
 		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
 
 		if (miUsuarioVo != null && miUsuarioVo.getTipo() == SECRETARIA) {
 			if (password.equals(miUsuarioVo.getPassword())) {
-				return miUsuarioVo.getNombre(); // Login exitoso
+				return miUsuarioVo.getNombre();
 			} else {
-				return "invalido"; // Contraseña incorrecta
+				return "invalido";
 			}
 		} else {
-			return "desconectado"; // Usuario no encontrado o no es secretaria
+			return "desconectado";
 		}
 	}
 
-	// Método para validar campos del usuario
+
 	public boolean validarCampos(UsuarioVo miUsuarioVo) {
 		boolean validarUsername = false;
 		boolean validarPassword = false;
+		boolean validarDocumento = false;
 
 		String password = miUsuarioVo.getPassword();
 		String username = miUsuarioVo.getUsername();
+		String documento = miUsuarioVo.getDocumento();
 
 		if (password != null && !password.equals("")) {
 			validarPassword = true;
@@ -87,21 +88,22 @@ public class Logica {
 			validarUsername = true;
 		}
 
-		return validarPassword && validarUsername;
+		if (documento != null && !documento.equals("")) {
+			validarDocumento = true;
+		}
+
+		return validarPassword && validarUsername && validarDocumento;
 	}
 
-	// Método para validar la edad
-	public Integer validarEdad(int edadIngresada) {
-		Integer edad = null;
-		try {
-			edad = Integer.parseInt(String.valueOf(edadIngresada));
-		} catch (Exception e) {
-			edad = null;
+
+	public Integer validarEdad(int edad) {
+		if (edad < 0 || edad > 80) {
+			return null;
 		}
 		return edad;
 	}
 
-	// Método para validar el tipo de usuario
+
 	public Integer validarTipo(String tipoIngresado) {
 		Integer tipo = null;
 		try {
@@ -111,4 +113,8 @@ public class Logica {
 		}
 		return tipo;
 	}
+
+
+
+
 }

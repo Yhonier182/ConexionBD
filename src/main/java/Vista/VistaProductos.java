@@ -1,5 +1,8 @@
 
 package Vista;
+
+import Controlador.Coordinador;
+
 /**
  *
  * @author JHONIER ARIAS
@@ -7,9 +10,7 @@ package Vista;
 public class VistaProductos extends javax.swing.JFrame {
 
 
-
     public VistaProductos() {
-        
         initComponents();
         setLocationRelativeTo(null); 
         setTitle("Productos"); 
@@ -175,5 +176,6 @@ public class VistaProductos extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     public javax.swing.JTable tablaProductos;
+    private Coordinador miCoordinador;
     // End of variables declaration//GEN-END:variables
 }

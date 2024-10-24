@@ -14,12 +14,11 @@
 
     public class ProductoDao {
 
-        // Método para registrar un producto
+
         public String registrarProducto(Productos producto) {
             String resultado = "error"; // Definir valor por defecto
             String consulta = "INSERT INTO producto (nombre, precio) VALUES (?, ?)";
 
-            // Usar try-with-resources para manejar la conexión, PreparedStatement y ResultSet
             try (Connection connection = new Conexion().getConnection();
                  PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
@@ -37,7 +36,7 @@
             return resultado;
         }
 
-        // Método para consultar un producto por nombre
+
         public Productos consultarProducto(String nombre) {
             Productos producto = null;
             String consulta = "SELECT * FROM producto WHERE nombre = ?";
@@ -81,13 +80,6 @@
                     producto.setPrecio(resultSet.getDouble("precio"));
                     listaProductos.add(producto);
                 }
-
-                // Agregar depuración para asegurarse de que los productos están siendo recuperados
-                System.out.println("Productos recuperados:");
-                for (Productos p : listaProductos) {
-                    System.out.println(p.getNombre() + " - " + p.getPrecio());
-                }
-
             } catch (SQLException e) {
                 System.out.println("Error al obtener productos: " + e.getMessage());
             }
@@ -109,7 +101,7 @@
 
                 preStatement.setString(1, producto.getNombre());
                 preStatement.setDouble(2, producto.getPrecio());
-                preStatement.setInt(3, producto.getId()); // Usamos el ID para identificar el producto
+                preStatement.setInt(3, producto.getId());
 
                 preStatement.executeUpdate();
                 resultado = "ok";
@@ -123,7 +115,7 @@
 
         // Método para eliminar un producto
         public String eliminarProducto(int id) {
-            String resp = "error";  // Valor por defecto
+            String resp = "error";
 
             String sentencia = "DELETE FROM producto WHERE id = ?";
             try (Connection connection = new Conexion().getConnection();

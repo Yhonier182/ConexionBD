@@ -8,6 +8,7 @@ import javax.swing.*;
 
 public class VentanaPrincipal extends JFrame implements ActionListener {
 
+
     private JButton botonConsultar;
     private JButton botonRegistrar;
     private JButton botonMostrarProductos;  // Nuevo botón para mostrar la lista
@@ -23,7 +24,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     public VentanaPrincipal() {
         initComponents();
         setTitle("Ventana Principal");
-        setSize(650, 450);  // Ajusté el tamaño para que tenga suficiente espacio
+        setSize(650, 450);  // Ajusté el tamaño
         setLocationRelativeTo(null);  // Centrar la ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -44,7 +45,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         // Asignar fondo de color y bordes
         miPanelPrincipal.setBackground(new Color(240, 240, 240)); // Color claro
         panelTitulo.setBackground(new Color(50, 50, 50));  // Color oscuro
-        panelInferior.setBackground(new Color(50, 50, 50));  // Color oscuro
+        panelInferior.setBackground(new Color(50, 50, 50));
     }
 
     private void initComponents() {
@@ -64,9 +65,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         labelInferior = new JLabel("http://codejavu.blogspot.com", SwingConstants.CENTER);
 
         // Inicializar botones
-        botonConsultar = new JButton("CONSULTAR");
+        botonConsultar = new JButton("CONSULTAS");
         botonRegistrar = new JButton("REGISTRAR");
-        botonMostrarProductos = new JButton("PRODUCTOS");  // El nuevo botón para mostrar la lista
+        botonMostrarProductos = new JButton("PRODUCTOS");
 
         // Configurar panel de título
         labelTitulo.setFont(new java.awt.Font("Arial", Font.BOLD, 32));
@@ -84,7 +85,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         botonConsultar.setForeground(Color.WHITE);
         botonConsultar.setFocusPainted(false);
         botonConsultar.setPreferredSize(new Dimension(200, 50));  // Ajuste de tamaño
-        botonConsultar.setToolTipText("Consultar usuario en el sistema");
+        botonConsultar.setToolTipText("Consultas");
         botonConsultar.addActionListener(this);
 
         botonRegistrar.setFont(new java.awt.Font("Arial", Font.PLAIN, 16));
@@ -107,13 +108,13 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         panelMenu.add(Box.createVerticalStrut(10));  // Espaciado entre los botones
         panelMenu.add(botonRegistrar);
         panelMenu.add(Box.createVerticalStrut(10));
-        panelMenu.add(botonMostrarProductos);  // Agregar el nuevo botón
+        panelMenu.add(botonMostrarProductos);
 
         // Asegurar que los botones estén alejados de los bordes con un espaciado adecuado
-        panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));  // Espaciado de 20 píxeles
+        panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Configurar el panel central para que los botones estén bien alineados
-        panelCentral.add(panelMenu, BorderLayout.WEST);  // Colocamos el menú a la izquierda
+        panelCentral.add(panelMenu, BorderLayout.WEST);  // Colocar el menú a la izquierda
 
         // Agregar los paneles al panel principal
         miPanelPrincipal.add(panelTitulo, BorderLayout.NORTH);
@@ -131,27 +132,23 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     public void asignarPrivilegios(int index, String nombre) {
         labelTitulo.setText("Bienvenido: " + nombre);
 
-        // Mostrar u ocultar botones según el tipo de usuario
         switch (index) {
             case 1: // Administrador
                 botonConsultar.setVisible(true);
-                botonRegistrar.setVisible(true);
-                botonMostrarProductos.setVisible(true); // Mostrar el botón para todos
+                botonRegistrar.setVisible(false);
+                botonMostrarProductos.setVisible(true);
                 break;
             case 2: // Usuario
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
-                botonMostrarProductos.setVisible(true); // Mostrar el botón
+                botonMostrarProductos.setVisible(true);
                 break;
             case 3: // Secretaria
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
-                botonMostrarProductos.setVisible(true); // Mostrar el botón
+                botonMostrarProductos.setVisible(true);
                 break;
             default:
-                botonConsultar.setVisible(false);
-                botonRegistrar.setVisible(false);
-                botonMostrarProductos.setVisible(false); // Ocultar el botón si no hay usuario
                 break;
         }
     }
@@ -161,16 +158,11 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         if (e.getSource() == itemOpciones) {
             miCoordinador.mostrarLogin();
         }
-        if (e.getSource() == botonRegistrar) {
-
-        }
         if (e.getSource() == botonConsultar) {
             miCoordinador.mostrarVentanaConsulta();
         }
         if (e.getSource() == botonMostrarProductos) {
-
-            VistaProductos vistaProductos = new VistaProductos();
-            vistaProductos.setVisible(true);
+              //traer la vista de productos creada desde el coordinador tarea  :::juan
         }
     }
 }

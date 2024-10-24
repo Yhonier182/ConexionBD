@@ -346,5 +346,5 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             JOptionPane.showMessageDialog(null, "Error al registrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
         }
         limpiarVentana();
-    }  // mejorar las advertencias
+    }
 }

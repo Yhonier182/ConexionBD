@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InactivarUsuarioUI extends JFrame {
-    private JTextField txtDocumento;
+   /* private JTextField txtDocumento;
     private JButton btnBuscar;
     private JButton btnInactivar;
     private JButton btnActivar;
@@ -18,7 +18,7 @@ public class InactivarUsuarioUI extends JFrame {
     private Coordinador miCoordinador;
 
     public InactivarUsuarioUI() {
-        miCoordinador = new Coordinador(); // Inicializa Coordinador aquí
+        miCoordinador = new Coordinador(); // Inicializa Coordinador
         setTitle("Control de Usuario");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridBagLayout());
@@ -183,5 +183,5 @@ public class InactivarUsuarioUI extends JFrame {
             InactivarUsuarioUI ui = new InactivarUsuarioUI();
             ui.setVisible(true);
         });
-    }
+    }*/
 }

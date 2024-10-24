@@ -2,21 +2,16 @@ package Vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JComboBox; // Importar JComboBox
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import Controlador.Coordinador;
 import Modelo.UsuarioVo;
 
 public class VentanaConsultaIndividual extends JDialog implements ActionListener {
 
-    private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername;
+    private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername, labelEstado;
     private JButton btonCancelar, btonConsultar, btonActualizar, btonEliminar, btonRegistrar;
     private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario;
-    private JComboBox<String> campoTipo; // Cambiar a JComboBox
+    private JComboBox<String> comboTipo, comboEstado; // Cambiado a JComboBox
     private JTextField campoUsername;
     private javax.swing.JPanel panelConsulta;
     private javax.swing.JSeparator separadorInferior, separadorSuperior;
@@ -43,13 +38,13 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         labelPassword = new javax.swing.JLabel();
         labelTipo = new javax.swing.JLabel();
         labelUsername = new javax.swing.JLabel();
+        labelEstado = new javax.swing.JLabel();
         separadorInferior = new javax.swing.JSeparator();
         campoNombre = new javax.swing.JTextField();
         campoDireccion = new javax.swing.JTextField();
         campoTelefono = new javax.swing.JTextField();
         campoProfesion = new javax.swing.JTextField();
         campoEdad = new javax.swing.JTextField();
-        campoTipo = new JComboBox<>(new String[]{"Administrador", "Usuario", "Secretaria"}); // Inicializar JComboBox
         campoUsername = new javax.swing.JTextField();
         separadorSuperior = new javax.swing.JSeparator();
         btonCancelar = new javax.swing.JButton();
@@ -60,6 +55,10 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         btonActualizar = new javax.swing.JButton();
         btonEliminar = new javax.swing.JButton();
         btonRegistrar = new javax.swing.JButton();
+
+        // Inicialización de JComboBox para Tipo y Estado
+        comboTipo = new JComboBox<>(new String[]{" Administrador", " Usuario", " Secretaria"});
+        comboEstado = new JComboBox<>(new String[]{" Inactivo", " Activo"}); // Cambiado a incluir el estado en texto
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         panelConsulta.setBackground(new java.awt.Color(204, 204, 204));
@@ -126,6 +125,12 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         panelConsulta.add(labelUsername);
         labelUsername.setBounds(400, 160, 100, 20);
 
+        labelEstado.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelEstado.setText("Estado:");
+        panelConsulta.add(labelEstado);
+        labelEstado.setBounds(0, 280, 90, 20);
+
         panelConsulta.add(separadorInferior);
         separadorInferior.setBounds(20, 320, 660, 10);
         panelConsulta.add(campoNombre);
@@ -140,10 +145,12 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoEdad.setBounds(510, 190, 170, 20);
         panelConsulta.add(campoPassword);
         campoPassword.setBounds(510, 130, 170, 20);
-        panelConsulta.add(campoTipo);
-        campoTipo.setBounds(100, 250, 300, 20); // Mantiene la posición
+        panelConsulta.add(comboTipo); // Añadir JComboBox de Tipo
+        comboTipo.setBounds(100, 250, 300, 20);
         panelConsulta.add(campoUsername);
         campoUsername.setBounds(510, 160, 170, 20);
+        panelConsulta.add(comboEstado); // Añadir JComboBox de Estado
+        comboEstado.setBounds(100, 280, 300, 20);
         panelConsulta.add(separadorSuperior);
         separadorSuperior.setBounds(20, 120, 660, 10);
 
@@ -223,10 +230,10 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 btonEliminar.setVisible(false);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
-                campoTipo.setVisible(false);
+                comboTipo.setVisible(false);
                 labelTipo.setVisible(false);
-
-
+                labelEstado.setVisible(false);
+                comboEstado.setVisible(false);
                 break;
             case 3: // Secretaria
                 btonActualizar.setVisible(false);
@@ -234,6 +241,10 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 btonEliminar.setVisible(false);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
+                labelEstado.setVisible(true);
+                comboEstado.setVisible(true);
+                labelTipo.setVisible(true);
+                comboTipo.setVisible(true);
                 break;
             default:
                 break;
@@ -249,15 +260,15 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoDireccion.setText("");
         campoTelefono.setText("");
         campoEdad.setText("");
-        campoTipo.setSelectedIndex(0); // Reiniciar a la primera opción
+        comboTipo.setSelectedIndex(0);
         campoUsername.setText("");
+        comboEstado.setSelectedIndex(0); // Establecer el estado a Inactivo
     }
 
     private void buscarUsuario() {
         String documento = campoBuscarUsuario.getText().trim();
         if (documento.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El campo no puede estar vacío",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El campo no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         UsuarioVo usuarioVO = miCoordinador.buscarUsuarioPorDocumento(documento);
@@ -269,11 +280,12 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             campoTelefono.setText(usuarioVO.getTelefono());
             campoEdad.setText(String.valueOf(usuarioVO.getEdad()));
             campoPassword.setText(usuarioVO.getPassword());
-            campoTipo.setSelectedIndex(usuarioVO.getTipo() - 1); // Ajustar índice para JComboBox
+
+            comboTipo.setSelectedIndex(usuarioVO.getTipo() - 1); // Ajuster  JComboBox
             campoUsername.setText(usuarioVO.getUsername());
+            comboEstado.setSelectedIndex(usuarioVO.getEstado()); // Asegúrar que retorne 0 o 1
         } else {
-            JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado en el sistema",
-                    "Datos Inexistentes", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado en el sistema", "Datos Inexistentes", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -288,17 +300,16 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             miUsuarioVo.setTelefono(campoTelefono.getText().trim());
             miUsuarioVo.setDireccion(campoDireccion.getText().trim());
             miUsuarioVo.setPassword(campoPassword.getText().trim());
-            miUsuarioVo.setTipo(campoTipo.getSelectedIndex() + 1); // Obtener el tipo del JComboBox
+            miUsuarioVo.setTipo(comboTipo.getSelectedIndex() + 1);
             miUsuarioVo.setUsername(campoUsername.getText().trim());
+            miUsuarioVo.setEstado(comboEstado.getSelectedIndex()); // Guardar 0 o 1 según selección
 
-            String actualiza = miCoordinador.validarCampos(miUsuarioVo) ?
-                    miCoordinador.actualizaUsuario(miUsuarioVo) : "mas_datos";
+            String actualiza = miCoordinador.validarCampos(miUsuarioVo) ? miCoordinador.actualizaUsuario(miUsuarioVo) : "mas_datos";
 
             if ("ok".equals(actualiza)) {
                 JOptionPane.showMessageDialog(null, "Se ha Modificado Correctamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                String mensaje = "mas_datos".equals(actualiza) ?
-                        "Debe Ingresar los campos obligatorios" : "Error al Modificar";
+                String mensaje = "mas_datos".equals(actualiza) ? "Debe Ingresar los campos obligatorios" : "Error al Modificar";
                 JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
@@ -336,8 +347,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         nuevoUsuario.setTelefono(campoTelefono.getText().trim());
         nuevoUsuario.setDireccion(campoDireccion.getText().trim());
         nuevoUsuario.setPassword(campoPassword.getText().trim());
-        nuevoUsuario.setTipo(campoTipo.getSelectedIndex() + 1); // Obtener el tipo del JComboBox
+        nuevoUsuario.setTipo(comboTipo.getSelectedIndex() + 1);
         nuevoUsuario.setUsername(campoUsername.getText().trim());
+        nuevoUsuario.setEstado(comboEstado.getSelectedIndex());
 
         String resultado = miCoordinador.registrarUsuario(nuevoUsuario);
         if ("ok".equals(resultado)) {

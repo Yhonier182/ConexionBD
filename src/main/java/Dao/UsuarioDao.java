@@ -26,8 +26,8 @@ public class UsuarioDao {
 		PreparedStatement preStatement = null;
 
 		connection = conexion.getConnection();
-		String consulta = "INSERT INTO usuario (documento, nombre, profesion, edad, direccion, telefono, tipo, password, username)"
-				+ " VALUES (?,?,?,?,?,?,?,?,?)";
+		String consulta = "INSERT INTO usuario (documento, nombre, profesion, edad, direccion, telefono, tipo, password, username, estado)"
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			preStatement = connection.prepareStatement(consulta);
@@ -40,6 +40,7 @@ public class UsuarioDao {
 			preStatement.setInt(7, miUsuarioVo.getTipo());
 			preStatement.setString(8, miUsuarioVo.getPassword());
 			preStatement.setString(9, miUsuarioVo.getUsername());
+			preStatement.setInt(10, miUsuarioVo.getEstado());
 
 			preStatement.execute();
 
@@ -94,6 +95,7 @@ public class UsuarioDao {
 					miUsuario.setTipo(result.getInt("tipo"));
 					miUsuario.setPassword(result.getString("password"));
 					miUsuario.setUsername(result.getString("username"));
+					miUsuario.setEstado(result.getInt("estado"));
 				}
 			}
 		} catch (SQLException e) {
@@ -136,6 +138,7 @@ public class UsuarioDao {
 					miUsuario.setTipo(result.getInt("tipo"));
 					miUsuario.setPassword(result.getString("password"));
 					miUsuario.setUsername(result.getString("username"));
+					miUsuario.setEstado(result.getInt("estado"));
 				}
 			}
 		} catch (SQLException e) {
@@ -154,7 +157,7 @@ public class UsuarioDao {
 		Conexion miConexion = new Conexion();
 		connection = miConexion.getConnection();
 		try {
-			String consulta = "UPDATE usuario SET documento= ? ,nombre = ? , profesion=? , edad=? , direccion=? ,telefono= ?, tipo=?, password=?, username=? WHERE documento= ?";
+			String consulta = "UPDATE usuario SET documento= ? ,nombre = ? , profesion=? , edad=? , direccion=? ,telefono= ?, tipo=?, password=?, username=? ,estado =? WHERE documento= ?";
 			PreparedStatement preStatement = connection.prepareStatement(consulta);
 
 			preStatement.setString(1, miUsuarioVo.getDocumento());
@@ -166,7 +169,8 @@ public class UsuarioDao {
 			preStatement.setInt(7, miUsuarioVo.getTipo());
 			preStatement.setString(8, miUsuarioVo.getPassword());
 			preStatement.setString(9, miUsuarioVo.getUsername());
-			preStatement.setString(10, miUsuarioVo.getDocumento());
+			preStatement.setInt(10, miUsuarioVo.getEstado());
+			preStatement.setString(11, miUsuarioVo.getDocumento());
 
 			preStatement.executeUpdate();
 

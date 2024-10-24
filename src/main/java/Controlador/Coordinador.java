@@ -43,11 +43,8 @@ public class Coordinador {
         this.miUsuarioDao = miUsuarioDao;
     }
 
-    public void setInactivarUsuarioUI(InactivarUsuarioUI inactivarUsuarioUI) {
-        this.inactivarUsuarioUI = inactivarUsuarioUI;
-    }
 
-    // Métodos para mostrar ventanas
+
     public void mostrarLogin() {
         miLogin.limpiar();
         miLogin.setVisible(true);
@@ -60,12 +57,10 @@ public class Coordinador {
     public void mostrarVentanaInactivacion() {
         if (inactivarUsuarioUI != null) {
             inactivarUsuarioUI.setVisible(true);
-        } else {
-            System.err.println("La ventana de inactivación no está inicializada.");
         }
     }
 
-    // Métodos de validación y manipulación de usuarios
+
     public String validarIngreso(int index, String username, String password) {
         return miLogica.validarIngreso(index, username, password);
     }
@@ -119,4 +114,10 @@ public class Coordinador {
     public String activarUsuario(String documento) {
         return miUsuarioDao.activarUsuario(documento);
     }
+
+    //mostrar ventana De estado del usuario
+    public void setInactivarUsuarioUI(InactivarUsuarioUI inactivarUsuarioUI) {
+        this.inactivarUsuarioUI = inactivarUsuarioUI;
+    }
+
 }

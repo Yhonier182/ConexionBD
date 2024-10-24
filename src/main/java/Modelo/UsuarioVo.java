@@ -12,10 +12,18 @@ public class UsuarioVo {
     private int tipo;
     private String password;
     private String username;
+    private int estado;
 
     public UsuarioVo() {
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
 
     public String getNombre() {
         return nombre;

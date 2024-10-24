@@ -214,6 +214,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 btonEliminar.setVisible(true);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
+
                 break;
             case 2: // Usuario
                 btonActualizar.setVisible(true);
@@ -234,6 +235,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
     }
 
+
+
+
     private void limpiarVentana() {
         campoNombre.setText("");
         campoDocumento.setText("");
@@ -249,15 +253,12 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
     private void buscarUsuario() {
         String documento = campoBuscarUsuario.getText().trim();
-
         if (documento.isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo no puede estar vacío",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         UsuarioVo usuarioVO = miCoordinador.buscarUsuarioPorDocumento(documento);
-
         if (usuarioVO != null) {
             campoNombre.setText(usuarioVO.getNombre());
             campoDocumento.setText(usuarioVO.getDocumento());
@@ -276,7 +277,11 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
 
     private void actualizaUsuario() {
+
         Integer edad = miCoordinador.validarEdad(Integer.parseInt(campoEdad.getText().trim()));
+
+
+
         if (edad != null) {
             UsuarioVo miUsuarioVo = new UsuarioVo();
             miUsuarioVo.setDocumento(campoDocumento.getText().trim());

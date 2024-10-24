@@ -7,4 +7,6 @@ public class Principal {
 		miAplicacion.iniciarSistema();
 	}
 
+
+	// HOLA JUAN
 }

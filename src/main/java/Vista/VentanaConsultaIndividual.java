@@ -12,9 +12,9 @@ import Modelo.UsuarioVo;
 
 public class VentanaConsultaIndividual extends JDialog implements ActionListener {
 
-    private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername, labelEstado;
+    private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername;
     private JButton btonCancelar, btonConsultar, btonActualizar, btonEliminar, btonRegistrar;
-    private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario, campoTipo, campoUsername, campoEstado;
+    private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario, campoTipo, campoUsername;
     private javax.swing.JPanel panelConsulta;
     private javax.swing.JSeparator separadorInferior, separadorSuperior;
     private Coordinador miCoordinador;
@@ -40,7 +40,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         labelPassword = new javax.swing.JLabel();
         labelTipo = new javax.swing.JLabel();
         labelUsername = new javax.swing.JLabel();
-        labelEstado = new javax.swing.JLabel();
         separadorInferior = new javax.swing.JSeparator();
         campoNombre = new javax.swing.JTextField();
         campoDireccion = new javax.swing.JTextField();
@@ -49,7 +48,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoEdad = new javax.swing.JTextField();
         campoTipo = new javax.swing.JTextField();
         campoUsername = new javax.swing.JTextField();
-        campoEstado = new javax.swing.JTextField();
         separadorSuperior = new javax.swing.JSeparator();
         btonCancelar = new javax.swing.JButton();
         btonConsultar = new javax.swing.JButton();
@@ -125,12 +123,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         panelConsulta.add(labelUsername);
         labelUsername.setBounds(400, 160, 100, 20);
 
-        labelEstado.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelEstado.setText("Estado:");
-        panelConsulta.add(labelEstado);
-        labelEstado.setBounds(0, 280, 90, 20);
-
         panelConsulta.add(separadorInferior);
         separadorInferior.setBounds(20, 320, 660, 10);
         panelConsulta.add(campoNombre);
@@ -149,8 +141,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoTipo.setBounds(100, 250, 300, 20);
         panelConsulta.add(campoUsername);
         campoUsername.setBounds(510, 160, 170, 20);
-        panelConsulta.add(campoEstado);
-        campoEstado.setBounds(100, 280, 300, 20);
         panelConsulta.add(separadorSuperior);
         separadorSuperior.setBounds(20, 120, 660, 10);
 
@@ -184,7 +174,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         btonRegistrar.setFont(new java.awt.Font("Verdana", 0, 14));
         btonRegistrar.setText("Registrar Usuario");
         panelConsulta.add(btonRegistrar);
-        btonRegistrar.setBounds(510, 250, 170, 30); // Alineado debajo del campo teléfono
+        btonRegistrar.setBounds(510, 250, 170, 30);
         btonRegistrar.addActionListener(e -> registrarUsuario());
 
         panelConsulta.add(campoDocumento);
@@ -207,6 +197,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
 
         if (e.getSource() == btonActualizar) {
+
             actualizaUsuario();
         }
 
@@ -216,9 +207,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
     }
 
     public void asignarPrivilegios(int index, String nombre) {
-
-
-        // Mostrar u ocultar botones según el tipo de usuario
         switch (index) {
             case 1: // Administrador
                 btonActualizar.setVisible(true);
@@ -229,22 +217,19 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 break;
             case 2: // Usuario
                 btonActualizar.setVisible(true);
-                btonRegistrar.setVisible(true);
-                /*btonEliminar.setEnabled(false);*/
+                btonRegistrar.setVisible(false);
                 btonEliminar.setVisible(false);
                 btonConsultar.setVisible(true);
                 btonCancelar.setVisible(true);
-
                 break;
             case 3: // Secretaria
-                btonActualizar.setVisible(true);
+                btonActualizar.setVisible(false);
                 btonRegistrar.setVisible(true);
-                btonEliminar.setVisible(true);
+                btonEliminar.setVisible(false);
                 btonConsultar.setVisible(true);
-                btonCancelar.setVisible(true); // Mostrar el botón
+                btonCancelar.setVisible(true);
                 break;
             default:
-                 // Ocultar el botón si no hay usuario
                 break;
         }
     }
@@ -260,11 +245,17 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoEdad.setText("");
         campoTipo.setText("");
         campoUsername.setText("");
-        campoEstado.setText("");
     }
 
     private void buscarUsuario() {
         String documento = campoBuscarUsuario.getText().trim();
+
+        if (documento.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo no puede estar vacío",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         UsuarioVo usuarioVO = miCoordinador.buscarUsuarioPorDocumento(documento);
 
         if (usuarioVO != null) {
@@ -277,43 +268,43 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             campoPassword.setText(usuarioVO.getPassword());
             campoTipo.setText(String.valueOf(usuarioVO.getTipo()));
             campoUsername.setText(usuarioVO.getUsername());
-            campoEstado.setText(String.valueOf(usuarioVO.getEstado()));
         } else {
             JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado en el sistema",
                     "Datos Inexistentes", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    private void actualizaUsuario() {
-        Integer edad = miCoordinador.validarEdad(campoEdad.getText().trim());
 
+    private void actualizaUsuario() {
+        Integer edad = miCoordinador.validarEdad(Integer.parseInt(campoEdad.getText().trim()));
         if (edad != null) {
             UsuarioVo miUsuarioVo = new UsuarioVo();
             miUsuarioVo.setDocumento(campoDocumento.getText().trim());
             miUsuarioVo.setNombre(campoNombre.getText().trim());
-            miUsuarioVo.setEdad(Integer.parseInt(campoEdad.getText().trim()));
+            miUsuarioVo.setEdad(edad);
             miUsuarioVo.setProfesion(campoProfesion.getText().trim());
             miUsuarioVo.setTelefono(campoTelefono.getText().trim());
             miUsuarioVo.setDireccion(campoDireccion.getText().trim());
             miUsuarioVo.setPassword(campoPassword.getText().trim());
             miUsuarioVo.setTipo(Integer.parseInt(campoTipo.getText().trim()));
             miUsuarioVo.setUsername(campoUsername.getText().trim());
-            miUsuarioVo.setEstado(Integer.parseInt(campoEstado.getText().trim()));
 
             String actualiza = miCoordinador.validarCampos(miUsuarioVo) ?
                     miCoordinador.actualizaUsuario(miUsuarioVo) : "mas_datos";
 
-            if (actualiza.equals("ok")) {
+            if ("ok".equals(actualiza)) {
                 JOptionPane.showMessageDialog(null, "Se ha Modificado Correctamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                String mensaje = actualiza.equals("mas_datos") ?
+                String mensaje = "mas_datos".equals(actualiza) ?
                         "Debe Ingresar los campos obligatorios" : "Error al Modificar";
                 JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debe ingresar una edad válida!!!", "Advertencia", JOptionPane.ERROR_MESSAGE);
         }
+        limpiarVentana();
     }
+
 
     private void eliminaUsuario() {
         String documento = campoDocumento.getText().trim();
@@ -332,6 +323,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese un documento ", "Información", JOptionPane.WARNING_MESSAGE);
         }
+        limpiarVentana();
     }
 
     private void registrarUsuario() {
@@ -345,7 +337,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         nuevoUsuario.setPassword(campoPassword.getText().trim());
         nuevoUsuario.setTipo(Integer.parseInt(campoTipo.getText().trim()));
         nuevoUsuario.setUsername(campoUsername.getText().trim());
-        nuevoUsuario.setEstado(Integer.parseInt(campoEstado.getText().trim()));
 
         String resultado = miCoordinador.registrarUsuario(nuevoUsuario);
         if ("ok".equals(resultado)) {
@@ -354,5 +345,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         } else {
             JOptionPane.showMessageDialog(null, "Error al registrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+        limpiarVentana();
+    }  // mejorar las advertencias
 }

@@ -20,6 +20,8 @@ public class Coordinador {
     private VentanaLista miVentanaLista;
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
+    private VistaProductos productos;
+
 
 
 
@@ -31,6 +33,8 @@ public class Coordinador {
     public void setVentanaLogin(VentanaLogin miLogin) {
         this.miLogin = miLogin;
     }
+
+
 
     public void setLogica(Logica miLogica) {
         this.miLogica = miLogica;
@@ -66,7 +70,7 @@ public class Coordinador {
         miVentanaConsultaIndividual.setVisible(true);
     }
 
-    // inicilizar dao
+
     public void setUsuarioDao(UsuarioDao miUsuarioDao) {
         this.miUsuarioDao = miUsuarioDao;
     }
@@ -79,8 +83,8 @@ public class Coordinador {
         return miLogica.validarCampos(miUsuarioVo);
     }
 
-    public Integer validarEdad(String edadIngresada) {
-        return miLogica.validarEdad(Integer.parseInt(edadIngresada));
+    public Integer validarEdad(int edadIngresada) {
+        return miLogica.validarEdad(edadIngresada);
     }
 
     public Modelo.UsuarioVo consultarUsuario(String username, String password ) {
@@ -103,7 +107,6 @@ public class Coordinador {
     public UsuarioVo buscarUsuarioPorDocumento(String documento) {
         return miUsuarioDao.buscarUsuarioPorDocumento(documento);
     }
-
 
 
 

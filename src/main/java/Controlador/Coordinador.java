@@ -51,6 +51,8 @@ public class Coordinador {
     public void asignarPrivilegios(int index, String usuario) {
         miVentana.asignarPrivilegios(index, usuario);
         miVentanaConsultaIndividual.asignarPrivilegios(index, usuario);
+
+
     }
 
     public void mostrarLogin() {

@@ -147,9 +147,7 @@ public class UsuarioDao {
 
 
 
-	public String actualizaUsuario(UsuarioVo miUsuarioVo) {
-
-		//crear  logica si el documento es igual al
+	public String actualizaUsuario(UsuarioVo miUsuarioVo ) {
 		String resultado = "";
 		Connection connection = null;
 		Conexion miConexion = new Conexion();

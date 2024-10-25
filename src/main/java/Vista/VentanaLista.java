@@ -76,7 +76,7 @@ public class VentanaLista extends JFrame {
     // Método para abrir VistaProductos
     private void abrirVistaProductos() {
         // Crear una instancia de VistaProductos
-        VistaProductos vistaProductos = new VistaProductos();
+        VentanaProductos vistaProductos = new VentanaProductos();
 
         // Centrar la ventana
         vistaProductos.setLocationRelativeTo(null);
@@ -95,5 +95,15 @@ public class VentanaLista extends JFrame {
         button.setBorder(BorderFactory.createLineBorder(new Color(0, 100, 200), 2));
     }
 
+    public static void main(String args[]) {
 
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Frame parentFrame = new JFrame(); // Aquí creas o usas la ventana padre
+                boolean modal = true; // O false si no quieres que sea modal
+                new VentanaProductos().setVisible(true);
+            }
+        });
+    }
 }

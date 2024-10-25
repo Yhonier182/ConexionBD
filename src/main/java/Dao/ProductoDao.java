@@ -1,134 +1,166 @@
     package Dao;
 
-    import Modelo.Productos;
-    import conexion.Conexion;
+    import Controlador.Coordinador;
+    import Modelo.ProductoVo;
 
     import java.sql.Connection;
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
     import java.util.ArrayList;
-    import java.util.List;
-    import javax.swing.JTable;
-    import javax.swing.table.DefaultTableModel;
 
     public class ProductoDao {
 
+        private Coordinador miCoordinador;
 
-        public String registrarProducto(Productos producto) {
-            String resultado = "error"; // Definir valor por defecto
-            String consulta = "INSERT INTO producto (nombre, precio) VALUES (?, ?)";
+        // Método para asignar el coordinador
+        public void setCoordinador(Coordinador miCoordinador) {
+            this.miCoordinador = miCoordinador;
+        }
 
-            try (Connection connection = new Conexion().getConnection();
-                 PreparedStatement preStatement = connection.prepareStatement(consulta)) {
+        // Método para registrar un producto
+        public boolean registrarProducto(ProductoVo miProducto) {
+            boolean resultado = false;
+            Connection connection = null;
+            PreparedStatement preStatement = null;
 
-                preStatement.setString(1, producto.getNombre());
-                preStatement.setDouble(2, producto.getPrecio());
+            String consulta = "INSERT INTO producto (idProducto, nombre, precio, cantidad) VALUES (?, ?, ?, ?)";
+
+            try {
+                connection = miCoordinador.getConexion().getConnection();
+                preStatement = connection.prepareStatement(consulta);
+                preStatement.setString(1, miProducto.getIdProducto());
+                preStatement.setString(2, miProducto.getNombre());
+                preStatement.setInt(3, miProducto.getPrecio());
+                preStatement.setInt(4, miProducto.getCantidad());
                 preStatement.execute();
-
-                resultado = "ok";
+                resultado = true;
 
             } catch (SQLException e) {
-                System.out.println("No se pudo registrar el producto: " + e.getMessage());
+                System.out.println("Error al registrar producto: " + e.getMessage());
                 e.printStackTrace();
+            } finally {
+                if (preStatement != null) {
+                    try {
+                        preStatement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             return resultado;
         }
 
+        // Método para listar todos los productos
+        public ArrayList<ProductoVo> listarProductos() {
+            ArrayList<ProductoVo> listaProductos = new ArrayList<>();
+            String consulta = "SELECT * FROM producto";
+            try (Connection connection = miCoordinador.getConexion().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(consulta);
+                 ResultSet result = statement.executeQuery()) {
 
-        public Productos consultarProducto(String nombre) {
-            Productos producto = null;
-            String consulta = "SELECT * FROM producto WHERE nombre = ?";
-
-            try (Connection connection = new Conexion().getConnection();
-                 PreparedStatement statement = connection.prepareStatement(consulta)) {
-
-                statement.setString(1, nombre);
-
-                try (ResultSet result = statement.executeQuery()) {
-                    if (result.next()) {
-                        producto = new Productos();
-                        producto.setId(result.getInt("id"));
-                        producto.setNombre(result.getString("nombre"));
-                        producto.setPrecio(result.getDouble("precio"));
-                    }
-                }
-
-            } catch (SQLException e) {
-                System.out.println("Error en la consulta del producto: " + e.getMessage());
-            }
-
-            return producto;
-        }
-
-
-
-
-        public List<Productos> obtenerProductos() {
-            List<Productos> listaProductos = new ArrayList<>();
-            String sql = "SELECT * FROM producto";
-
-            try (Connection connection = new Conexion().getConnection();
-                 PreparedStatement statement = connection.prepareStatement(sql);
-                 ResultSet resultSet = statement.executeQuery()) {
-
-                while (resultSet.next()) {
-                    Productos producto = new Productos();
-                    producto.setId(resultSet.getInt("id"));
-                    producto.setNombre(resultSet.getString("nombre"));
-                    producto.setPrecio(resultSet.getDouble("precio"));
+                while (result.next()) {
+                    ProductoVo producto = new ProductoVo();
+                    producto.setIdProducto(result.getString("idProducto"));
+                    producto.setNombre(result.getString("nombre"));
+                    producto.setPrecio(result.getInt("precio"));
+                    producto.setCantidad(result.getInt("cantidad"));
                     listaProductos.add(producto);
                 }
-            } catch (SQLException e) {
-                System.out.println("Error al obtener productos: " + e.getMessage());
-            }
 
+            } catch (SQLException e) {
+                System.out.println("Error al listar productos: " + e.getMessage());
+            }
             return listaProductos;
         }
 
+        // Método para consultar un producto por nombre
+        public ProductoVo consultarProductoPorNombre(String nombre) {
+            ProductoVo producto = null;
+            String consulta = "SELECT * FROM producto WHERE nombre = ?";
+            try (Connection connection = miCoordinador.getConexion().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(consulta)) {
 
+                statement.setString(1, nombre);
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        producto = new ProductoVo();
+                        producto.setIdProducto(result.getString("idProducto"));
+                        producto.setNombre(result.getString("nombre"));
+                        producto.setPrecio(result.getInt("precio"));
+                        producto.setCantidad(result.getInt("cantidad"));
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al consultar producto por nombre: " + e.getMessage());
+            }
+            return producto;
+        }
 
+        // Método para consultar un producto por ID
+        public ProductoVo consultarProducto(String idProducto) {
+            ProductoVo producto = null;
+            String consulta = "SELECT * FROM producto WHERE idProducto = ?";
+            try (Connection connection = miCoordinador.getConexion().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(consulta)) {
 
+                statement.setString(1, idProducto);
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        producto = new ProductoVo();
+                        producto.setIdProducto(result.getString("idProducto"));
+                        producto.setNombre(result.getString("nombre"));
+                        producto.setCantidad(result.getInt("cantidad"));
+                        producto.setPrecio(result.getInt("precio"));
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al consultar producto por ID: " + e.getMessage());
+            }
+            return producto;
+        }
 
         // Método para actualizar un producto
-        public String actualizarProducto(Productos producto) {
-            String resultado = "error";  // Valor por defecto
-
-            String consulta = "UPDATE producto SET nombre = ?, precio = ? WHERE id = ?";
-            try (Connection connection = new Conexion().getConnection();
+        public boolean actualizarProducto(ProductoVo producto) {
+            boolean resultado = false;
+            String consulta = "UPDATE producto SET nombre = ?, cantidad = ?, precio = ? WHERE idProducto = ?";
+            try (Connection connection = miCoordinador.getConexion().getConnection();
                  PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
                 preStatement.setString(1, producto.getNombre());
-                preStatement.setDouble(2, producto.getPrecio());
-                preStatement.setInt(3, producto.getId());
-
+                preStatement.setInt(2, producto.getCantidad());
+                preStatement.setInt(3, producto.getPrecio());
+                preStatement.setString(4, producto.getIdProducto());
                 preStatement.executeUpdate();
-                resultado = "ok";
+                resultado = true;
 
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("Error al actualizar producto: " + e.getMessage());
             }
-
             return resultado;
         }
 
         // Método para eliminar un producto
-        public String eliminarProducto(int id) {
-            String resp = "error";
+        public boolean eliminarProducto(String idProducto) {
+            boolean resultado = false;
+            String consulta1 = "DELETE FROM producto WHERE idProducto = ?";
+            String consulta2 = "DELETE FROM usuario_tiene_producto WHERE idProducto = ?";
+            try (Connection connection = miCoordinador.getConexion().getConnection();
+                 PreparedStatement preStatement1 = connection.prepareStatement(consulta1);
+                 PreparedStatement preStatement2 = connection.prepareStatement(consulta2)) {
 
-            String sentencia = "DELETE FROM producto WHERE id = ?";
-            try (Connection connection = new Conexion().getConnection();
-                 PreparedStatement statement = connection.prepareStatement(sentencia)) {
+                preStatement1.setString(1, idProducto);
+                preStatement1.executeUpdate();
 
-                statement.setInt(1, id);
-                statement.executeUpdate();
-                resp = "ok";
+                preStatement2.setString(1, idProducto);
+                preStatement2.executeUpdate();
+
+                resultado = true;
 
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Error al eliminar producto: " + e.getMessage());
             }
-
-            return resp;
+            return resultado;
         }
     }

@@ -3,8 +3,11 @@ package Controlador;
 import Dao.ProductoDao;
 import Dao.UsuarioDao;
 import Modelo.Logica;
+import Modelo.ProductoVo;
 import Modelo.UsuarioVo;
 import Vista.*;
+
+import java.sql.DatabaseMetaData;
 
 public class Coordinador {
 
@@ -15,8 +18,10 @@ public class Coordinador {
     private VentanaLista miVentanaLista;
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
-    private VistaProductos productos;
+    private VentanaProductos productos;
     private InactivarUsuarioUI inactivarUsuarioUI;
+    //para carrito de compras
+    private Coordinador miCarrito;
 
 
     public Coordinador() {
@@ -120,4 +125,27 @@ public class Coordinador {
         this.inactivarUsuarioUI = inactivarUsuarioUI;
     }
 
+    //metodos para productos y compras
+    public ProductoVo consultarProducto(String id) {
+        return miProductoDao.consultarProducto(id);
+    }
+
+    public ProductoVo consultarProductoPorNombre(String nombre) {
+        return miProductoDao.consultarProductoPorNombre(nombre);
+    }
+
+    public DatabaseMetaData getConexion() {
+
+        return null;
+    }
+
+    public boolean comprar(String idProducto, String id_producto) {
+        return this.miCarrito.comprar(id_producto, this.miUsuarioDao.getDocumento());
+    }
+
+    public void mostrarVentanaCarrito() {
+    }
+
+    public void mostrarVentanaListaProductos() {
+    }
 }

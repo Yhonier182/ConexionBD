@@ -261,7 +261,10 @@ public class UsuarioDao {
 	}
 
 
+    public String getDocumento() {
 
+        return "";
+    }
 
 
 }

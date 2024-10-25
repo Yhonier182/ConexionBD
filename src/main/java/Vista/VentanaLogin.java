@@ -180,8 +180,8 @@ public class VentanaLogin extends JDialog implements ActionListener {
                     JOptionPane.showMessageDialog(null, "La contraseña no corresponde", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     if (resp.equals("desconectado")) {
-                        JOptionPane.showMessageDialog(null, "No se pudo conectar a la BD, "
-                                + "verifique que se encuentre en línea", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Su usuario esta inactivo, "
+                                + "por favor comuniquese con un administrador", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
                     } else {
                         miCoordinador.asignarPrivilegios(comboUsuarios.getSelectedIndex(), resp);
                         miCoordinador.cerrarVentanaLogin();

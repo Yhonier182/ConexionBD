@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InactivarUsuarioUI extends JFrame {
-   /* private JTextField txtDocumento;
+    private JTextField txtDocumento;
     private JButton btnBuscar;
     private JButton btnInactivar;
     private JButton btnActivar;
@@ -183,5 +183,5 @@ public class InactivarUsuarioUI extends JFrame {
             InactivarUsuarioUI ui = new InactivarUsuarioUI();
             ui.setVisible(true);
         });
-    }*/
+    }
 }

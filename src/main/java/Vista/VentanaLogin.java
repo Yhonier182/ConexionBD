@@ -175,13 +175,16 @@ public class VentanaLogin extends JDialog implements ActionListener {
 
             if (resp.equals("error")) {
                 JOptionPane.showMessageDialog(null, "No ha seleccionado un usuario", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                limpiar();
             } else {
                 if (resp.equals("invalido")) {
                     JOptionPane.showMessageDialog(null, "La contraseña no corresponde", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    limpiar();
                 } else {
                     if (resp.equals("desconectado")) {
                         JOptionPane.showMessageDialog(null, "Su usuario esta inactivo, "
                                 + "por favor comuniquese con un administrador", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+                        limpiar();
                     } else {
                         miCoordinador.asignarPrivilegios(comboUsuarios.getSelectedIndex(), resp);
                         miCoordinador.cerrarVentanaLogin();
@@ -211,10 +214,9 @@ public class VentanaLogin extends JDialog implements ActionListener {
             campoPass.setVisible(true);
             labelUsername.setVisible(true);
             campoUsername.setVisible(true);
+
         }
 
 
-        panelLogin.revalidate();
-        panelLogin.repaint();
     }
 }

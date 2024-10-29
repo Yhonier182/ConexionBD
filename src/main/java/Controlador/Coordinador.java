@@ -9,6 +9,7 @@ import Vista.*;
 import conexion.Conexion;
 
 import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
 
 public class Coordinador {
 
@@ -137,6 +138,13 @@ public class Coordinador {
         return miProductoDao.consultarProductoPorNombre(nombre);
     }
 
+     //listarUsuarios
+     public ArrayList<UsuarioVo> listarUsuarios() {
+         return miUsuarioDao.listarUsuarios();
+     }
+
+
+
     public void mostrarVentanaProductos() {
         if (ventanaProductos == null) {
             ventanaProductos = new VentanaProductos(null, true);
@@ -144,6 +152,11 @@ public class Coordinador {
         }
         ventanaProductos.setVisible(true);
     }
+
+
+
+
+
     // Método de compra de producto
     public boolean comprar(String idProducto, String id_usuario) {
         // Implementa lógica de compra según sea necesario

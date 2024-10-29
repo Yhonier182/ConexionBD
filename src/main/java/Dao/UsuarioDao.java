@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 import Controlador.Coordinador;
@@ -261,10 +262,47 @@ public class UsuarioDao {
 	}
 
 
-    public String getDocumento() {
+	public ArrayList<UsuarioVo> listarUsuarios() {
+		ArrayList<UsuarioVo> resultado = new ArrayList<>();
+		Connection connection = null;
+		Conexion miConexion = new Conexion();
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 
-        return "";
-    }
+		connection = miConexion.getConnection();
+		try {
+			String sql = "SELECT * FROM usuario";
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				UsuarioVo usuario = new UsuarioVo();
+				usuario.setDocumento(resultSet.getString("documento"));
+				usuario.setNombre(resultSet.getString("nombre"));
+				usuario.setProfesion(resultSet.getString("profesion"));
+				usuario.setEdad(resultSet.getInt("edad"));
+				usuario.setDireccion(resultSet.getString("direccion"));
+				usuario.setTelefono(resultSet.getString("telefono"));
+				usuario.setTipo(resultSet.getInt("tipo"));
+				usuario.setPassword(resultSet.getString("password"));
+				usuario.setUsername(resultSet.getString("username"));
+				usuario.setEstado(resultSet.getInt("estado"));
+
+				resultado.add(usuario);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al listar los usuarios: " + e.getMessage());
+		} finally {
+			try {
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) miConexion.desconectar();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultado;
+	}
 
 
 }

@@ -1,5 +1,7 @@
 package Vista;
 
+
+import Controlador.Coordinador;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,13 +10,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VentanaLista extends JFrame {
+
+public class VentanaListaProductos extends JFrame {
 
     private JButton btnVerProductos;  // Botón para abrir la ventana de productos
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
+    private Coordinador miCoordinador;
 
-    public VentanaLista() {
+    public VentanaListaProductos() {
         setTitle("Lista de Productos");
         setSize(900, 600);
         setLocationRelativeTo(null);  // Centra la ventana de VentanaLista
@@ -75,14 +79,13 @@ public class VentanaLista extends JFrame {
 
     // Método para abrir VistaProductos
     private void abrirVistaProductos() {
-        // Crear una instancia de VistaProductos
-        VentanaProductos vistaProductos = new VentanaProductos();
-
-        // Centrar la ventana
-        vistaProductos.setLocationRelativeTo(null);
-
-        // Hacer visible la ventana
-        vistaProductos.setVisible(true);
+        if (miCoordinador != null) { // Verifica que miCoordinador esté inicializado
+            VentanaProductos vistaProductos = new VentanaProductos(null, true);
+            vistaProductos.setCoordinador(miCoordinador); // Asegura que el coordinador está configurado
+            vistaProductos.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Coordinador no asignado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Método para dar estilo a los botones
@@ -96,14 +99,14 @@ public class VentanaLista extends JFrame {
     }
 
     public static void main(String args[]) {
-
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Frame parentFrame = new JFrame(); // Aquí creas o usas la ventana padre
-                boolean modal = true; // O false si no quieres que sea modal
-                new VentanaProductos().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            VentanaListaProductos ventanaLista = new VentanaListaProductos();
+            ventanaLista.setVisible(true);
         });
+    }
+
+    public void setCoordinador(Coordinador coordinador) {
+        this.miCoordinador=miCoordinador;
     }
 }

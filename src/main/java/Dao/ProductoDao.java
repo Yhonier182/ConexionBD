@@ -21,14 +21,11 @@
         // Método para registrar un producto
         public boolean registrarProducto(ProductoVo miProducto) {
             boolean resultado = false;
-            Connection connection = null;
-            PreparedStatement preStatement = null;
-
             String consulta = "INSERT INTO producto (idProducto, nombre, precio, cantidad) VALUES (?, ?, ?, ?)";
 
-            try {
-                connection = miCoordinador.getConexion().getConnection();
-                preStatement = connection.prepareStatement(consulta);
+            try (Connection connection = miCoordinador.getConexion().getConnection();
+                 PreparedStatement preStatement = connection.prepareStatement(consulta)) {
+
                 preStatement.setString(1, miProducto.getIdProducto());
                 preStatement.setString(2, miProducto.getNombre());
                 preStatement.setInt(3, miProducto.getPrecio());
@@ -39,19 +36,9 @@
             } catch (SQLException e) {
                 System.out.println("Error al registrar producto: " + e.getMessage());
                 e.printStackTrace();
-            } finally {
-                if (preStatement != null) {
-                    try {
-                        preStatement.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
-
             return resultado;
         }
-
         // Método para listar todos los productos
         public ArrayList<ProductoVo> listarProductos() {
             ArrayList<ProductoVo> listaProductos = new ArrayList<>();

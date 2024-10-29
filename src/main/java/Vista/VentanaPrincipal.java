@@ -142,6 +142,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
             miCoordinador.mostrarVentanaInactivacion();
         }
         if (e.getSource() == botonMostrarProductos) {
+            miCoordinador.mostrarVentanaProductos();
             // Lógica para mostrar productos
         }
     }

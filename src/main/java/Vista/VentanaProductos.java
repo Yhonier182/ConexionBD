@@ -33,14 +33,11 @@ public class VentanaProductos extends JDialog  implements ActionListener{
     private String id_producto;
 
     public VentanaProductos(Frame parent, boolean modal) {
+
         initComponents();
         setSize(710, 320);
         setResizable(false);
         setLocationRelativeTo(null);
-    }
-
-    public VentanaProductos() {
-
     }
 
     private void initComponents() {
@@ -146,9 +143,9 @@ public class VentanaProductos extends JDialog  implements ActionListener{
         this.miCoordinador=miCoordinador;
     }
 
-    private void consultar () {
-        String id = this.campoID.getText();
-        String nombre = this.campoNombre.getText();
+    private void consultar() {
+        String id = campoID.getText();
+        String nombre = campoNombre.getText();
         miProducto = null;
         if (id.length() > 0) {
             miProducto = miCoordinador.consultarProducto(id);
@@ -159,15 +156,14 @@ public class VentanaProductos extends JDialog  implements ActionListener{
         }
 
         if (miProducto != null) {
-            this.campoID.setText(miProducto.getIdProducto());
-            this.campoNombre.setText(miProducto.getNombre());
-            this.lblCantidadValue.setText(miProducto.getCantidad()+" unidades");
-            this.lblPrecioValue.setText(miProducto.getPrecio()+"$");
+            campoID.setText(miProducto.getIdProducto());
+            campoNombre.setText(miProducto.getNombre());
+            lblCantidadValue.setText(miProducto.getCantidad() + " unidades");
+            lblPrecioValue.setText(miProducto.getPrecio() + "$");
         } else if (id.length() > 0 || nombre.length() > 0) {
             JOptionPane.showMessageDialog(null, "No se pudo encontrar el producto", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void comprar (String id_producto) {
         if (miProducto != null) {
             if (miCoordinador.comprar(miProducto.getIdProducto(), id_producto)) {
@@ -190,10 +186,6 @@ public class VentanaProductos extends JDialog  implements ActionListener{
             comprar((String) id_producto);
         }
 
-        if (e.getSource() == this.btnCarrito) {
-            this.miCoordinador.mostrarVentanaCarrito();
-        }
-
         if (e.getSource() == this.btnProductos) {
             this.miCoordinador.mostrarVentanaListaProductos();
         }
@@ -210,5 +202,5 @@ public class VentanaProductos extends JDialog  implements ActionListener{
             ventana.setVisible(true);
         });
     }
-    }
+}
 

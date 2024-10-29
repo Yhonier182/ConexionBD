@@ -6,6 +6,7 @@ import Modelo.Logica;
 import Modelo.ProductoVo;
 import Modelo.UsuarioVo;
 import Vista.*;
+import conexion.Conexion;
 
 import java.sql.DatabaseMetaData;
 
@@ -18,14 +19,20 @@ public class Coordinador {
     private VentanaLista miVentanaLista;
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
-    private VentanaProductos productos;
+    private VentanaProductos ventanaProductos;
     private InactivarUsuarioUI inactivarUsuarioUI;
-    //para carrito de compras
-    private Coordinador miCarrito;
 
+    private Conexion conexion;
 
     public Coordinador() {
+        this.conexion = new Conexion();
         this.miUsuarioDao = new UsuarioDao();
+        this.miProductoDao = new ProductoDao();
+        this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao
+    }
+    // Método para obtener la conexión
+    public Conexion getConexion() {
+        return this.conexion;
     }
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
@@ -48,8 +55,6 @@ public class Coordinador {
         this.miUsuarioDao = miUsuarioDao;
     }
 
-
-
     public void mostrarLogin() {
         miLogin.limpiar();
         miLogin.setVisible(true);
@@ -65,11 +70,6 @@ public class Coordinador {
         }
     }
 
-
-    public String validarIngreso(int index, String username, String password) {
-        return miLogica.validarIngreso(index, username, password);
-    }
-
     public void cerrarVentanaLogin() {
         miLogin.dispose();
     }
@@ -77,6 +77,10 @@ public class Coordinador {
     public void asignarPrivilegios(int index, String usuario) {
         miVentana.asignarPrivilegios(index, usuario);
         miVentanaConsultaIndividual.asignarPrivilegios(index, usuario);
+    }
+
+    public String validarIngreso(int index, String username, String password) {
+        return miLogica.validarIngreso(index, username, password);
     }
 
     public String registrarUsuario(UsuarioVo miUsuarioVo) {
@@ -125,7 +129,6 @@ public class Coordinador {
         this.inactivarUsuarioUI = inactivarUsuarioUI;
     }
 
-    //metodos para productos y compras
     public ProductoVo consultarProducto(String id) {
         return miProductoDao.consultarProducto(id);
     }
@@ -134,18 +137,30 @@ public class Coordinador {
         return miProductoDao.consultarProductoPorNombre(nombre);
     }
 
-    public DatabaseMetaData getConexion() {
-
-        return null;
+    public void mostrarVentanaProductos() {
+        if (ventanaProductos == null) {
+            ventanaProductos = new VentanaProductos(null, true);
+            ventanaProductos.setCoordinador(this);
+        }
+        ventanaProductos.setVisible(true);
     }
-
-    public boolean comprar(String idProducto, String id_producto) {
-        return this.miCarrito.comprar(id_producto, this.miUsuarioDao.getDocumento());
-    }
-
-    public void mostrarVentanaCarrito() {
+    // Método de compra de producto
+    public boolean comprar(String idProducto, String id_usuario) {
+        // Implementa lógica de compra según sea necesario
+        return false; // Cambia según la implementación real
     }
 
     public void mostrarVentanaListaProductos() {
+        if (miVentanaLista == null) {
+            miVentanaLista = new VentanaLista();
+            miVentanaLista.setCoordinador(this); // Añade el coordinador para la conexión
+        }
+        miVentanaLista.setVisible(true);
     }
 }
+
+
+
+    //
+
+

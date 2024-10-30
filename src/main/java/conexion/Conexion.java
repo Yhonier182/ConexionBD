@@ -41,8 +41,18 @@ public class Conexion {
 
 	// Método para obtener la conexión
 	public Connection getConnection() {
+		try {
+			if (conn == null || conn.isClosed()) {
+				conn = DriverManager.getConnection(url, usuario, password);
+				System.out.println("Conexión restablecida a la BD: " + nombreBd);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al restablecer la conexión a la base de datos: " + e.getMessage());
+		}
 		return conn;
 	}
+
+
 
 	// Método para cerrar la conexión
 	public void desconectar() {

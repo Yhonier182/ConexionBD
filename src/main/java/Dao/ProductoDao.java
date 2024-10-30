@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class ProductoDao {
 
-    // actuali
-
     private Coordinador miCoordinador;
 
     public void setCoordinador(Coordinador miCoordinador) {
@@ -21,7 +19,6 @@ public class ProductoDao {
     }
 
     public boolean registrarProducto(ProductoVo miProducto) {
-
         String consulta = "INSERT INTO producto (idProducto, nombreProducto, descripcion, precio, cantidad) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
@@ -31,7 +28,6 @@ public class ProductoDao {
             preStatement.setString(3, miProducto.getDescripcion());
             preStatement.setInt(4, miProducto.getPrecio());
             preStatement.setInt(5, miProducto.getCantidad());
-
             preStatement.execute();
             return true;
 
@@ -48,8 +44,6 @@ public class ProductoDao {
              PreparedStatement statement = connection.prepareStatement(consulta);
              ResultSet resultSet = statement.executeQuery()) {
 
-            System.out.println("Consulta ejecutada: " + consulta);
-
             while (resultSet.next()) {
                 ProductoVo producto = new ProductoVo();
                 producto.setIdProducto(resultSet.getString("idProducto"));
@@ -62,25 +56,20 @@ public class ProductoDao {
         } catch (SQLException e) {
             System.out.println("Error al listar productos: " + e.getMessage());
         }
-        System.out.println("Total de productos obtenidos: " + productos.size());
         return productos;
     }
-
-
     // Método para actualizar un producto
     public boolean actualizarProducto(ProductoVo producto) {
-        String consulta = "UPDATE producto SET nombreProducto = ?, cantidad = ?, descirpcion =?, precio = ? WHERE idProducto = ?";
+        String consulta = "UPDATE producto SET nombreProducto = ?, descripcion = ?, precio = ?, cantidad = ? WHERE idProducto = ?";
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
-
             preStatement.setString(1, producto.getNombre());
-            preStatement.setInt(2, producto.getCantidad());
-            preStatement.setString(3, producto.getDescripcion());
+            preStatement.setString(2, producto.getDescripcion());
             preStatement.setInt(3, producto.getPrecio());
-            preStatement.setString(4, producto.getIdProducto());
+            preStatement.setInt(4, producto.getCantidad());
+            preStatement.setString(5, producto.getIdProducto());
             preStatement.executeUpdate();
             return true;
-
         } catch (SQLException e) {
             System.out.println("Error al actualizar producto: " + e.getMessage());
             return false;
@@ -91,26 +80,24 @@ public class ProductoDao {
         String consulta = "DELETE FROM producto WHERE idProducto = ?";
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
-
             preStatement.setString(1, idProducto);
             preStatement.executeUpdate();
             return true;
-
         } catch (SQLException e) {
             System.out.println("Error al eliminar producto: " + e.getMessage());
             return false;
         }
     }
     //metodpo para comprar producto
-    public boolean comprarProducto(String idProducto, String documento) {
-        String consulta = "INSERT INTO usuario_tiene_producto (idProducto, documento) VALUES (?, ?)";
+    public boolean comprarProducto(String idProducto) {
+        String consulta = "UPDATE producto SET cantidad = cantidad - 1 WHERE idProducto = ? AND cantidad > 0";
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, idProducto);
-            preStatement.setString(2, documento);
-            preStatement.execute();
-            return true;
+            int filasActualizadas = preStatement.executeUpdate();
+
+            return filasActualizadas > 0; // Retorna true si se actualizó alguna fila
 
         } catch (SQLException e) {
             System.out.println("Error al comprar producto: " + e.getMessage());
@@ -121,7 +108,6 @@ public class ProductoDao {
     public ProductoVo consultarProducto(String idProducto) {
         ProductoVo producto = null;
         String consulta = "SELECT * FROM producto WHERE idProducto = ?";
-
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta)) {
 
@@ -171,7 +157,6 @@ public class ProductoDao {
     public ArrayList<String> listarCarrito(String documentoUsuario) {
         ArrayList<String> lista = new ArrayList<>();
         String consulta = "SELECT P.nombre, P.precio FROM producto P JOIN usuario_tiene_producto UtP ON UtP.idProducto = P.idProducto WHERE UtP.documento = ?";
-
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta)) {
 

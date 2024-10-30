@@ -1,41 +1,46 @@
 package Controlador;
 
-import Dao.ProductoDao;
+import Dao.ProductoDao; // Importar ProductoDao
 import Dao.UsuarioDao;
 import Modelo.Logica;
+import Modelo.LogicaCarrito;
 import Modelo.ProductoVo;
 import Modelo.UsuarioVo;
 import Vista.*;
 import conexion.Conexion;
-
 import java.sql.Connection;
 import java.util.ArrayList;
 
 public class Coordinador {
 
+    private  Connection conexion;
     private VentanaPrincipal miVentana;
     private VentanaLogin miLogin;
     private Logica miLogica;
     private VentanaConsultaIndividual miVentanaConsultaIndividual;
-    private VentanaLista miVentanaLista;
+    private VentanaListaProductos miVentanaLista;
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
     private VentanaProductos ventanaProductos;
     private InactivarUsuarioUI inactivarUsuarioUI;
     private ventanaUsuarios ventanaUsuarios;
+    private LogicaCarrito logicaCarrito;
 
-    private Conexion conexion;
+    private String documentoUsuario;
+
 
     public Coordinador() {
-        Connection conexion = Conexion.getInstance().getConnection();
-
+        this.logicaCarrito=new LogicaCarrito();
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
-        this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao
+        this.miProductoDao.setCoordinador(this);
+        this.miUsuarioDao.setCoordinador(this);
+        this.logicaCarrito.setCoordinador(this);
     }
+
     // Método para obtener la conexión
-    public Conexion getConexion() {
-        return this.conexion;
+    public Connection getConexion() {
+        return Conexion.getInstance().getConnection();
     }
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
@@ -56,6 +61,10 @@ public class Coordinador {
 
     public void setUsuarioDao(UsuarioDao miUsuarioDao) {
         this.miUsuarioDao = miUsuarioDao;
+    }
+    // Método para establecer el documento del usuario
+    public void setDocumentoUsuario(String documentoUsuario) {
+        this.documentoUsuario = documentoUsuario;
     }
 
     public void mostrarLogin() {
@@ -86,6 +95,39 @@ public class Coordinador {
         return miLogica.validarIngreso(index, username, password);
     }
 
+    public void mostrarVentanaUsuarios() {
+        if (ventanaUsuarios == null) {
+            ventanaUsuarios = new ventanaUsuarios();
+            ventanaUsuarios.setCoordinador(this);
+        }
+        ventanaUsuarios.setVisible(true);
+    }
+
+    public void mostrarVentanaListaProductos() {
+        if (miVentanaLista == null) {
+            miVentanaLista = new VentanaListaProductos();
+            miVentanaLista.setCoordinador(this);
+        }
+        miVentanaLista.setVisible(true);
+    }
+
+    public void mostrarVentanaProductos() {
+        if (ventanaProductos == null) {
+            ventanaProductos = new VentanaProductos(null, true);
+            ventanaProductos.setCoordinador(this);
+        }
+        ventanaProductos.setVisible(true);
+    }
+
+    public void mostrarVentanaCarrito() {
+        VentanaCarritoCompras ventanaCarrito = new VentanaCarritoCompras(null, true);
+        ventanaCarrito.setCoordinador(this);
+        ventanaCarrito.refrescar();
+        ventanaCarrito.setVisible(true);
+    }
+
+    // usar metodos
+
     public String registrarUsuario(UsuarioVo miUsuarioVo) {
         return miUsuarioDao.registrarUsuario(miUsuarioVo);
     }
@@ -110,10 +152,6 @@ public class Coordinador {
         return miUsuarioDao.eliminarUsuario(documento);
     }
 
-    public Integer validarTipo(String tipoIngresado) {
-        return miLogica.validarTipo(tipoIngresado);
-    }
-
     public UsuarioVo buscarUsuarioPorDocumento(String documento) {
         return miUsuarioDao.buscarUsuarioPorDocumento(documento);
     }
@@ -132,51 +170,61 @@ public class Coordinador {
         this.inactivarUsuarioUI = inactivarUsuarioUI;
     }
 
-    public ProductoVo consultarProducto(String id) {
-        return miProductoDao.consultarProducto(id);
+    //listarUsuarios
+    public ArrayList<UsuarioVo> listarUsuarios() {
+        return miUsuarioDao.listarUsuarios();
     }
 
-    public ProductoVo consultarProductoPorNombre(String nombre) {
-        return miProductoDao.consultarProductoPorNombre(nombre);
+
+    // Metodos para interactuar con productoDao
+    public boolean registrarProducto(ProductoVo producto) {
+        return miProductoDao.registrarProducto(producto);
     }
 
-     //listarUsuarios
-     public ArrayList<UsuarioVo> listarUsuarios() {
-         return miUsuarioDao.listarUsuarios();
-     }
 
+    public ProductoVo consultarProducto(String idProducto) {
+        return miProductoDao.consultarProducto(idProducto);
+    }
 
+    public boolean actualizarProducto(ProductoVo producto) {
+        return miProductoDao.actualizarProducto(producto);
+    }
 
-    public void mostrarVentanaProductos() {
-        if (ventanaProductos == null) {
-            ventanaProductos = new VentanaProductos(null, true);
-            ventanaProductos.setCoordinador(this);
+    public boolean eliminarProducto(String idProducto) {
+        return miProductoDao.eliminarProducto(idProducto);
+    }
+
+    public ArrayList<ProductoVo> listarProductos() {
+        if (miProductoDao != null) {
+            return miProductoDao.listarProductos();
+        } else {
+            System.out.println("Error: ProductoDao no está inicializado.");
+            return new ArrayList<>();
         }
-        ventanaProductos.setVisible(true);
     }
-
-
-
 
 
     // Método de compra de producto
     public boolean comprar(String idProducto, String id_usuario) {
-        // Implementa lógica de compra según sea necesario
-        return false; // Cambia según la implementación real
+        return logicaCarrito.comprar(idProducto,documentoUsuario);
     }
 
-    public void mostrarVentanaListaProductos() {
-        if (miVentanaLista == null) {
-            miVentanaLista = new VentanaLista();
-            miVentanaLista.setCoordinador(this); // Añade el coordinador para la conexión
+    // Método para listar productos en el carrito
+    public ArrayList<String> listarCarrito() {
+        if (documentoUsuario != null) {
+            return miProductoDao.listarCarrito(documentoUsuario);
+        } else {
+            System.out.println("Error: No se ha definido el documento del usuario.");
+            return new ArrayList<>();
         }
-        miVentanaLista.setVisible(true);
     }
 
-    public void mostrarVentanaUsuarios() {
-         ventanaUsuarios.setVisible(true);
+    public ProductoVo consultarProductoPorNombre(String nombre) {
+
+        return null;
     }
 }
+
 
 
 

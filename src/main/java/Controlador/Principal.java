@@ -6,6 +6,6 @@ public class Principal {
 		Aplicacion miAplicacion=new Aplicacion();
 		miAplicacion.iniciarSistema();
 
-		//juan
+
 	}
 }

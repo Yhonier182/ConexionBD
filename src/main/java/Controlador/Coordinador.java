@@ -172,9 +172,11 @@ public class Coordinador {
     }
 
     public void mostrarVentanaUsuarios() {
-      if (USER != null){
-          USER.setVisible(true);
-      }
+        if (USER == null) {
+            USER = new ventanaUsuarios();
+            USER.setCoordinador(this);
+        }
+        USER.setVisible(true);
     }
 
 

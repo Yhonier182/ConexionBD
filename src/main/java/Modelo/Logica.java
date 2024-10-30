@@ -74,7 +74,4 @@ public class Logica {
 		return tipo;
 	}
 
-
-
-
 }

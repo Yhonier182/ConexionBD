@@ -1,5 +1,6 @@
 package Vista;
 
+
 import Controlador.Coordinador;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -9,14 +10,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VentanaLista extends JFrame {
+
+public class VentanaListaProductos extends JFrame {
 
     private JButton btnVerProductos;  // Botón para abrir la ventana de productos
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     private Coordinador miCoordinador;
 
-    public VentanaLista() {
+    public VentanaListaProductos() {
         setTitle("Lista de Productos");
         setSize(900, 600);
         setLocationRelativeTo(null);  // Centra la ventana de VentanaLista
@@ -99,7 +101,7 @@ public class VentanaLista extends JFrame {
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            VentanaLista ventanaLista = new VentanaLista();
+            VentanaListaProductos ventanaLista = new VentanaListaProductos();
             ventanaLista.setVisible(true);
         });
     }

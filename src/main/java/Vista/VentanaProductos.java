@@ -14,7 +14,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
     private JPanel panelProductos;
     private JLabel lblTitulo, lblIngresoNombre, lblIngresoID, lblPrecio, lblCantidad, lblPrecioValue, lblCantidadValue;
     private JTextField campoID, campoNombre;
-    private JButton btnConsultar, btnComprar, btnCarrito, btnProductos;
+    private JButton btnConsultar, btnComprar, btnProductos;
     private JSeparator separadorSuperior, separadorInferior;
     private ProductoVo miProducto;
 
@@ -75,21 +75,12 @@ public class VentanaProductos extends JDialog implements ActionListener {
 
         btnComprar = new JButton("Comprar");
         btnComprar.setFont(new Font("Verdana", Font.PLAIN, 14));
-        btnComprar.setBounds(480, 240, 140, 35);
+        btnComprar.setBounds(500, 240, 140, 35);
         btnComprar.setBackground(new Color(60, 179, 113));
         btnComprar.setForeground(Color.WHITE);
         btnComprar.setFocusPainted(false);
         btnComprar.addActionListener(this);
         panelProductos.add(btnComprar);
-
-        btnCarrito = new JButton("Ver carrito");
-        btnCarrito.setFont(new Font("Verdana", Font.PLAIN, 14));
-        btnCarrito.setBounds(80, 320, 150, 35);
-        btnCarrito.setBackground(new Color(255, 165, 0));
-        btnCarrito.setForeground(Color.WHITE);
-        btnCarrito.setFocusPainted(false);
-        btnCarrito.addActionListener(this);
-        panelProductos.add(btnCarrito);
 
         btnProductos = new JButton("Ver lista de productos");
         btnProductos.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -164,18 +155,18 @@ public class VentanaProductos extends JDialog implements ActionListener {
     }
 
 
-    private void comprar() {
-        if (miProducto != null) {
-            String documentoUsuario = "usuario_id";
-            boolean compraExitosa = miCoordinador.comprar(miProducto.getIdProducto(), documentoUsuario);
-            if (compraExitosa) {
-                JOptionPane.showMessageDialog(this, "Se ha realizado la compra de " + miProducto.getNombre() + " exitosamente");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se ha podido realizar la compra", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+    private void comprarProducto() {
+        if (btnComprar != null){
+            JOptionPane.showMessageDialog(this, "Se ha realizado la compra de " + miProducto.getNombre() + " exitosamente");
         } else {
-            JOptionPane.showMessageDialog(this, "Se debe seleccionar un producto primero", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se ha podido realizar la compra", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    public void limpiarCampos() {
+        campoID.setText("");
+        campoNombre.setText("");
+        lblPrecioValue.setText("0$");
+        lblCantidadValue.setText("0 unidades");
     }
 
     @Override
@@ -183,11 +174,11 @@ public class VentanaProductos extends JDialog implements ActionListener {
         if (e.getSource() == btnConsultar) {
             consultar();
         } else if (e.getSource() == btnComprar) {
-            comprar();
-        } else if (e.getSource() == btnCarrito) {
-            miCoordinador.mostrarVentanaCarrito();
+            comprarProducto();
         } else if (e.getSource() == btnProductos) {
-            miCoordinador.mostrarVentanaListaProductos();
+            this.setVisible(false);
+            miCoordinador.mostrarVentanaListaProductos(this); // Abre la ventana de lista de productos
+
         }
     }
 

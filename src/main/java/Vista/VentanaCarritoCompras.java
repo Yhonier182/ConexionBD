@@ -67,7 +67,7 @@ public class VentanaCarritoCompras extends JDialog implements ActionListener {
 
         public void refrescar() {
             String documentoUsuario = "usuario_id";
-            ArrayList<String> compras = miCoordinador.listarCarrito();
+            ArrayList<String> compras = miCoordinador.listarCarrito(documentoUsuario);
             if (compras != null) {
                 modelo.clear();
                 if (!compras.isEmpty()) {

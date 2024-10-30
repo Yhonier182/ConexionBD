@@ -42,6 +42,7 @@ public class Aplicacion {
 		miCoordinador.setInactivarUsuarioUI(miInactivarUsuarioUI);
 
 
+
 		// Mostramos las ventanas
 		miLogin.setVisible(true);
 		miVentana.setVisible(true);

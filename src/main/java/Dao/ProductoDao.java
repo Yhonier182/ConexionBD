@@ -2,6 +2,8 @@ package Dao;
 
 import Controlador.Coordinador;
 import Modelo.ProductoVo;
+import conexion.Conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +21,9 @@ public class ProductoDao {
     }
 
     public boolean registrarProducto(ProductoVo miProducto) {
+
         String consulta = "INSERT INTO producto (idProducto, nombreProducto, descripcion, precio, cantidad) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, miProducto.getIdProducto());
@@ -41,7 +44,7 @@ public class ProductoDao {
     public ArrayList<ProductoVo> listarProductos() {
         ArrayList<ProductoVo> productos = new ArrayList<>();
         String consulta = "SELECT idProducto, nombreProducto, descripcion, precio, cantidad FROM producto";
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta);
              ResultSet resultSet = statement.executeQuery()) {
 
@@ -62,10 +65,12 @@ public class ProductoDao {
         System.out.println("Total de productos obtenidos: " + productos.size());
         return productos;
     }
+
+
     // Método para actualizar un producto
     public boolean actualizarProducto(ProductoVo producto) {
         String consulta = "UPDATE producto SET nombreProducto = ?, cantidad = ?, descirpcion =?, precio = ? WHERE idProducto = ?";
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, producto.getNombre());
@@ -84,7 +89,7 @@ public class ProductoDao {
     // Método para eliminar un producto
     public boolean eliminarProducto(String idProducto) {
         String consulta = "DELETE FROM producto WHERE idProducto = ?";
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, idProducto);
@@ -99,7 +104,7 @@ public class ProductoDao {
     //metodpo para comprar producto
     public boolean comprarProducto(String idProducto, String documento) {
         String consulta = "INSERT INTO usuario_tiene_producto (idProducto, documento) VALUES (?, ?)";
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, idProducto);
@@ -117,7 +122,7 @@ public class ProductoDao {
         ProductoVo producto = null;
         String consulta = "SELECT * FROM producto WHERE idProducto = ?";
 
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta)) {
 
             statement.setString(1, idProducto);
@@ -142,7 +147,7 @@ public class ProductoDao {
         ProductoVo producto = null;
         String consulta = "SELECT * FROM producto WHERE nombreProducto = ?";
 
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta)) {
 
             statement.setString(1, nombreProducto);
@@ -167,7 +172,7 @@ public class ProductoDao {
         ArrayList<String> lista = new ArrayList<>();
         String consulta = "SELECT P.nombre, P.precio FROM producto P JOIN usuario_tiene_producto UtP ON UtP.idProducto = P.idProducto WHERE UtP.documento = ?";
 
-        try (Connection connection = miCoordinador.getConexion();
+        try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(consulta)) {
 
             statement.setString(1, documentoUsuario);

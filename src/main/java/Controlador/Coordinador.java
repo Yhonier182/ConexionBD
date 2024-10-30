@@ -17,27 +17,23 @@ public class Coordinador {
     private VentanaLogin miLogin;
     private Logica miLogica;
     private VentanaConsultaIndividual miVentanaConsultaIndividual;
-    private VentanaLista miVentanaLista;
+    private VentanaListaProductos miVentanaLista;
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
     private VentanaProductos ventanaProductos;
     private InactivarUsuarioUI inactivarUsuarioUI;
-    private ventanaUsuarios ventanaUsuarios;
+    private ventanaUsuarios USER;
+    private VentanaCarritoCompras ventanaCarritoCompras;
 
     private Conexion conexion;
 
     public Coordinador() {
-        Connection conexion = Conexion.getInstance().getConnection();
-
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
         this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao
+
     }
 
-    // Método para obtener la conexión
-    public Conexion getConexion() {
-        return this.conexion;
-    }
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
         this.miVentana = miVentana;
@@ -160,6 +156,7 @@ public class Coordinador {
 
 
 
+
     // Método de compra de producto
     public boolean comprar(String idProducto, String id_usuario) {
         // Implementa lógica de compra según sea necesario
@@ -168,19 +165,34 @@ public class Coordinador {
 
     public void mostrarVentanaListaProductos() {
         if (miVentanaLista == null) {
-            miVentanaLista = new VentanaLista();
+            miVentanaLista = new VentanaListaProductos();
             miVentanaLista.setCoordinador(this); // Añade el coordinador para la conexión
         }
         miVentanaLista.setVisible(true);
     }
 
     public void mostrarVentanaUsuarios() {
-        if (ventanaUsuarios != null) {
-            ventanaUsuarios.setVisible(true);
+      if (USER != null){
+          USER.setVisible(true);
+      }
+    }
+
+
+
+    public ArrayList<ProductoVo> listarProductos() {
+        return miProductoDao.listarProductos();
+    }
+
+    public ArrayList<String> listarCarrito(String documentoUsuario) {
+        return miProductoDao.listarCarrito(documentoUsuario);
+    }
+
+    public void mostrarVentanaCarrito() {
+        if (ventanaCarritoCompras != null){
+            ventanaCarritoCompras.setVisible(true);
         }
 
     }
-
 }
 
 

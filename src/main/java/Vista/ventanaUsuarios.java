@@ -33,6 +33,7 @@ public class ventanaUsuarios extends JFrame {
      * Método para inicializar componentes de la ventana.
      */
     private void initComponents() {
+        miCoordinador = new Coordinador();
         // Crear el panel principal
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setBackground(new Color(204, 204, 204));

@@ -12,6 +12,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     private JButton botonRegistrar;
     private JButton botonMostrarProductos;
     private JButton botonInactivar;  // Declaración del botón Inactivar
+    private JButton botonMostrarUsuarios; // Declaración del botón Mostrar Usuarios
     private JLabel labelTitulo, labelInferior;
     private JPanel miPanelPrincipal, panelTitulo, panelInferior, panelCentral, panelMenu;
 
@@ -62,6 +63,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         botonRegistrar = new JButton("REGISTRAR");
         botonMostrarProductos = new JButton("PRODUCTOS");
         botonInactivar = new JButton("INACTIVAR");  // Inicialización del botón Inactivar
+        botonMostrarUsuarios = new JButton("MOSTRAR USUARIOS"); // Inicialización del botón Mostrar Usuarios
 
         labelTitulo.setFont(new java.awt.Font("Arial", Font.BOLD, 32));
         labelTitulo.setForeground(Color.WHITE);
@@ -75,6 +77,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         configurarBoton(botonRegistrar);
         configurarBoton(botonMostrarProductos);
         configurarBoton(botonInactivar);  // Configurar el botón Inactivar
+        configurarBoton(botonMostrarUsuarios); // Configurar el botón Mostrar Usuarios
 
         panelMenu.add(botonConsultar);
         panelMenu.add(Box.createVerticalStrut(10));
@@ -83,6 +86,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         panelMenu.add(botonMostrarProductos);
         panelMenu.add(Box.createVerticalStrut(10));
         panelMenu.add(botonInactivar);  // Agregar el botón Inactivar al panel
+        panelMenu.add(Box.createVerticalStrut(10));
+        panelMenu.add(botonMostrarUsuarios); // Agregar el botón Mostrar Usuarios al panel
 
         panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panelCentral.add(panelMenu, BorderLayout.WEST);
@@ -114,17 +119,20 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
                 botonMostrarProductos.setVisible(true);
+                botonMostrarUsuarios.setVisible(true); // Hacer visible para Administrador
                 break;
             case 2: // Usuario
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
                 botonMostrarProductos.setVisible(true);
                 botonInactivar.setVisible(false);
+                botonMostrarUsuarios.setVisible(false); // Ocultar para Usuario
                 break;
             case 3: // Secretaria
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
                 botonMostrarProductos.setVisible(true);
+                botonMostrarUsuarios.setVisible(true); // Hacer visible para Secretaria
                 break;
             default:
                 break;
@@ -144,11 +152,11 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         }
         if (e.getSource() == botonMostrarProductos) {
             miCoordinador.mostrarVentanaProductos();
-            // Lógica para mostrar productos
+        }
+        if (e.getSource() == botonMostrarUsuarios) { // Agregar acción para el botón Mostrar Usuarios
+            miCoordinador.mostrarVentanaUsuarios();
         }
     }
-
-
 
     public static void main(String[] args) {
         // Crear el coordinador

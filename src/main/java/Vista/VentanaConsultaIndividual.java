@@ -302,6 +302,20 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
     }
 
     private void actualizaUsuario() {
+
+        if (campoDocumento.getText().trim().isEmpty() ||
+                campoNombre.getText().trim().isEmpty() ||
+                campoEdad.getText().trim().isEmpty() ||
+                campoProfesion.getText().trim().isEmpty() ||
+                campoTelefono.getText().trim().isEmpty() ||
+                campoDireccion.getText().trim().isEmpty() ||
+                campoPassword.getText().trim().isEmpty() ||
+                campoUsername.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Debe completar todos los campos obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         Integer edad = miCoordinador.validarEdad(Integer.parseInt(campoEdad.getText().trim()));
         if (edad != null) {
             UsuarioVo miUsuarioVo = new UsuarioVo();
@@ -329,6 +343,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
         limpiarVentana();
     }
+
 
     private void eliminaUsuario() {
         String documento = campoDocumento.getText().trim();

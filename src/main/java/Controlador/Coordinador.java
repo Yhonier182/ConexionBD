@@ -22,6 +22,7 @@ public class Coordinador {
     private ProductoDao miProductoDao;
     private VentanaProductos ventanaProductos;
     private InactivarUsuarioUI inactivarUsuarioUI;
+    private ventanaUsuarios ventanaUsuarios;
 
     private Conexion conexion;
 
@@ -171,10 +172,11 @@ public class Coordinador {
         }
         miVentanaLista.setVisible(true);
     }
+
+    public void mostrarVentanaUsuarios() {
+         ventanaUsuarios.setVisible(true);
+    }
 }
 
-
-
-    //
 
 

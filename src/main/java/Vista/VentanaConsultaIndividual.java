@@ -165,7 +165,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
         btonConsultar.setFont(new java.awt.Font("Verdana", 0, 14));
         btonConsultar.setText("Buscar");
-        btonConsultar.addActionListener(e -> buscarUsuario());
+        btonConsultar.addActionListener(this);
         panelConsulta.add(btonConsultar);
         btonConsultar.setBounds(420, 90, 110, 20);
 
@@ -185,7 +185,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         btonRegistrar.setText("Registrar Usuario");
         panelConsulta.add(btonRegistrar);
         btonRegistrar.setBounds(510, 250, 170, 30);
-        btonRegistrar.addActionListener(e -> registrarUsuario());
+        btonRegistrar.addActionListener(this);
 
         panelConsulta.add(campoDocumento);
         campoDocumento.setBounds(100, 130, 300, 20);
@@ -208,10 +208,22 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
         if (e.getSource() == btonActualizar) {
             actualizaUsuario();
+            limpiarVentana();
+
         }
 
         if (e.getSource() == btonEliminar) {
             eliminaUsuario();
+            limpiarVentana();
+        }
+
+        if (e.getSource()== btonRegistrar){
+            registrarUsuario();
+            limpiarVentana();
+        }
+
+        if (e.getSource()== btonConsultar){
+            buscarUsuario();
         }
     }
 
@@ -335,10 +347,23 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese un documento ", "Información", JOptionPane.WARNING_MESSAGE);
         }
-        limpiarVentana();
+
     }
 
     private void registrarUsuario() {
+
+        if (campoNombre.getText().trim().isEmpty() ||
+                campoDocumento.getText().trim().isEmpty() ||
+                campoEdad.getText().trim().isEmpty() ||
+                campoProfesion.getText().trim().isEmpty() ||
+                campoTelefono.getText().trim().isEmpty() ||
+                campoDireccion.getText().trim().isEmpty() ||
+                campoPassword.getText().trim().isEmpty() ||
+                campoUsername.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Los campos no pueden estar vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         UsuarioVo nuevoUsuario = new UsuarioVo();
         nuevoUsuario.setNombre(campoNombre.getText().trim());
         nuevoUsuario.setDocumento(campoDocumento.getText().trim());
@@ -351,13 +376,35 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         nuevoUsuario.setUsername(campoUsername.getText().trim());
         nuevoUsuario.setEstado(comboEstado.getSelectedIndex());
 
+
         String resultado = miCoordinador.registrarUsuario(nuevoUsuario);
         if ("ok".equals(resultado)) {
             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             limpiarVentana();
         } else {
             JOptionPane.showMessageDialog(null, "Error al registrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+            limpiarVentana();
         }
-        limpiarVentana();
+    }
+
+
+
+    public static void main(String[] args) {
+        // Crear un JFrame como padre de la JDialog
+        JFrame parentFrame = new JFrame();
+        parentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        parentFrame.setSize(400, 300); // Tamaño del JFrame
+        parentFrame.setLocationRelativeTo(null);
+
+        // Crear el coordinador
+        Coordinador coordinador = new Coordinador(); // Aquí deberías inicializar tu Coordinador correctamente
+
+        // Crear la ventana de consulta individual
+        VentanaConsultaIndividual ventana = new VentanaConsultaIndividual(parentFrame, true);
+        ventana.setCoordinador(coordinador); // Asignar el coordinador
+        ventana.setVisible(true); // Mostrar la ventana
+
+        // Cerrar el parent frame al salir
+        parentFrame.setVisible(true);
     }
 }

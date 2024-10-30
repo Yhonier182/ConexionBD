@@ -17,57 +17,21 @@ public class Logica {
 
 
 	public String validarIngreso(int index, String username, String password) {
-		String retorno = "";
-
-		if (index == USUARIO) {
-			retorno = validarLoginUsuario(username, password);
-		} else if (index == ADMINISTRADOR) {
-			retorno = validarLoginAdministrador(username, password);
-		} else if (index == SECRETARIA) {
-			retorno = validarLoginSecretaria(username, password);
-		} else {
-			retorno = "error";
-		}
-		return retorno;
-	}
-
-	private String validarLoginUsuario(String username, String password) {
 		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
 
-		if (miUsuarioVo != null) {
+		if (miUsuarioVo == null) {
+			return "desconectado";
+		}
+
+		if (index == ADMINISTRADOR && miUsuarioVo.getTipo() == ADMINISTRADOR) {
+			return password.equals(miUsuarioVo.getPassword()) ? miUsuarioVo.getNombre() : "invalido";
+		} else if (index == USUARIO && miUsuarioVo.getTipo() == USUARIO) {
 			return miUsuarioVo.getNombre();
-		} else {
-			return "desconectado";
+		} else if (index == SECRETARIA && miUsuarioVo.getTipo() == SECRETARIA) {
+			return password.equals(miUsuarioVo.getPassword()) ? miUsuarioVo.getNombre() : "invalido";
 		}
-	}
 
-	private String validarLoginAdministrador(String username, String password) {
-		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
-
-		if (miUsuarioVo != null && miUsuarioVo.getTipo() == ADMINISTRADOR) {
-			if (password.equals(miUsuarioVo.getPassword())) {
-				return miUsuarioVo.getNombre();
-			} else {
-				return "invalido";
-			}
-		} else {
-			return "desconectado";
-		}
-	}
-
-
-	private String validarLoginSecretaria(String username, String password) {
-		UsuarioVo miUsuarioVo = miCoordinador.consultarUsuario(username, password);
-
-		if (miUsuarioVo != null && miUsuarioVo.getTipo() == SECRETARIA) {
-			if (password.equals(miUsuarioVo.getPassword())) {
-				return miUsuarioVo.getNombre();
-			} else {
-				return "invalido";
-			}
-		} else {
-			return "desconectado";
-		}
+		return "error";
 	}
 
 

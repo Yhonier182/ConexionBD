@@ -24,7 +24,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     public VentanaPrincipal() {
         initComponents();
         setTitle("Ventana Principal");
-        setSize(650, 450);
+        setSize(1200, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -119,6 +119,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
                 botonConsultar.setVisible(true);
                 botonRegistrar.setVisible(false);
                 botonMostrarProductos.setVisible(true);
+                botonInactivar.setVisible(false);
                 break;
             case 3: // Secretaria
                 botonConsultar.setVisible(true);
@@ -145,5 +146,19 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
             miCoordinador.mostrarVentanaProductos();
             // Lógica para mostrar productos
         }
+    }
+
+
+
+    public static void main(String[] args) {
+        // Crear el coordinador
+        Coordinador coordinador = new Coordinador();
+
+        // Crear la ventana principal
+        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+        ventanaPrincipal.setCoordinador(coordinador);  // Pasar el coordinador a la ventana
+
+        // Hacer visible la ventana
+        ventanaPrincipal.setVisible(true);
     }
 }

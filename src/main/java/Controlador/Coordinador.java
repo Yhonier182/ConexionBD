@@ -33,6 +33,7 @@ public class Coordinador {
         this.miProductoDao = new ProductoDao();
         this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao
     }
+
     // Método para obtener la conexión
     public Conexion getConexion() {
         return this.conexion;
@@ -174,8 +175,12 @@ public class Coordinador {
     }
 
     public void mostrarVentanaUsuarios() {
-         ventanaUsuarios.setVisible(true);
+        if (ventanaUsuarios != null) {
+            ventanaUsuarios.setVisible(true);
+        }
+
     }
+
 }
 
 

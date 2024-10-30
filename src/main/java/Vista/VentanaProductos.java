@@ -9,14 +9,16 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class VentanaProductos extends JDialog implements ActionListener {
-
     private Coordinador miCoordinador;
+
     private JPanel panelProductos;
     private JLabel lblTitulo, lblIngresoNombre, lblIngresoID, lblPrecio, lblCantidad, lblPrecioValue, lblCantidadValue;
     private JTextField campoID, campoNombre;
     private JButton btnConsultar, btnComprar, btnCarrito, btnProductos;
     private JSeparator separadorSuperior, separadorInferior;
     private ProductoVo miProducto;
+
+
 
     public VentanaProductos(Frame parent, boolean modal) {
         super(parent, modal);
@@ -25,19 +27,21 @@ public class VentanaProductos extends JDialog implements ActionListener {
         setResizable(false);
         setLocationRelativeTo(null);
     }
-
     private void initComponents() {
+        // Panel principal con estilo de fondo y borde
         panelProductos = new JPanel();
         panelProductos.setBackground(new Color(238, 238, 238));
         panelProductos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panelProductos.setLayout(null);
 
+        // Título estilizado
         lblTitulo = new JLabel("Compra y Consulta de Productos", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 28));
         lblTitulo.setForeground(new Color(54, 54, 54));
         lblTitulo.setBounds(20, 10, 700, 50);
         panelProductos.add(lblTitulo);
 
+        // Etiquetas de instrucciones
         lblIngresoNombre = new JLabel("Nombre del producto:");
         lblIngresoNombre.setFont(new Font("Verdana", Font.PLAIN, 14));
         lblIngresoNombre.setBounds(80, 80, 200, 20);
@@ -48,6 +52,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
         lblIngresoID.setBounds(80, 120, 200, 20);
         panelProductos.add(lblIngresoID);
 
+        // Campos de texto
         campoNombre = new JTextField();
         campoNombre.setBounds(280, 80, 250, 25);
         campoNombre.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -58,6 +63,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
         campoID.setFont(new Font("Verdana", Font.PLAIN, 14));
         panelProductos.add(campoID);
 
+        // Botones con estilo y colores
         btnConsultar = new JButton("Consultar");
         btnConsultar.setFont(new Font("Verdana", Font.PLAIN, 14));
         btnConsultar.setBounds(570, 100, 140, 35);
@@ -69,7 +75,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
 
         btnComprar = new JButton("Comprar");
         btnComprar.setFont(new Font("Verdana", Font.PLAIN, 14));
-        btnComprar.setBounds(450, 240, 140, 35);
+        btnComprar.setBounds(480, 240, 140, 35);
         btnComprar.setBackground(new Color(60, 179, 113));
         btnComprar.setForeground(Color.WHITE);
         btnComprar.setFocusPainted(false);
@@ -94,6 +100,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
         btnProductos.addActionListener(this);
         panelProductos.add(btnProductos);
 
+        // Separadores
         separadorSuperior = new JSeparator();
         separadorSuperior.setBounds(20, 180, 700, 10);
         panelProductos.add(separadorSuperior);
@@ -102,6 +109,7 @@ public class VentanaProductos extends JDialog implements ActionListener {
         separadorInferior.setBounds(20, 300, 700, 10);
         panelProductos.add(separadorInferior);
 
+        // Etiquetas de precio y cantidad
         lblPrecio = new JLabel("Precio:");
         lblPrecio.setFont(new Font("Verdana", Font.BOLD, 16));
         lblPrecio.setBounds(280, 200, 100, 30);
@@ -136,37 +144,34 @@ public class VentanaProductos extends JDialog implements ActionListener {
 
     private void consultar() {
         String id = campoID.getText();
-        String nombre = campoNombre.getText();
-        miProducto = null;
+        String nombreProducto = campoNombre.getText();
 
-        if (id.length() > 0) {
-            miProducto = miCoordinador.consultarProducto(id);
-        } else if (nombre.length() > 0) {
-            miProducto = miCoordinador.consultarProductoPorNombre(nombre);
-        } else {
-            JOptionPane.showMessageDialog(this, "Se debe ingresar el ID o nombre del producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (id.isEmpty() && nombreProducto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID o nombre para consultar el producto.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        miProducto = id.isEmpty() ? miCoordinador.consultarProductoPorNombre(nombreProducto) : miCoordinador.consultarProducto(id);
 
         if (miProducto != null) {
             campoID.setText(miProducto.getIdProducto());
             campoNombre.setText(miProducto.getNombre());
             lblCantidadValue.setText(miProducto.getCantidad() + " unidades");
             lblPrecioValue.setText(miProducto.getPrecio() + "$");
-        } else if (id.length() > 0 || nombre.length() > 0) {
-            JOptionPane.showMessageDialog(this, "No se pudo encontrar el producto", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Producto no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void comprarProducto() {
+
+    private void comprar() {
         if (miProducto != null) {
-            String documentoUsuario = JOptionPane.showInputDialog(this, "Ingrese el documento del usuario:");
-            if (documentoUsuario != null && !documentoUsuario.isEmpty()) {
-                boolean resultado = miCoordinador.comprar(miProducto.getIdProducto(), documentoUsuario);
-                if (resultado) {
-                    JOptionPane.showMessageDialog(this, "Producto añadido al carrito con éxito.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo añadir el producto al carrito.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            String documentoUsuario = "usuario_id";
+            boolean compraExitosa = miCoordinador.comprar(miProducto.getIdProducto(), documentoUsuario);
+            if (compraExitosa) {
+                JOptionPane.showMessageDialog(this, "Se ha realizado la compra de " + miProducto.getNombre() + " exitosamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se ha podido realizar la compra", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Se debe seleccionar un producto primero", "Error", JOptionPane.ERROR_MESSAGE);
@@ -178,17 +183,17 @@ public class VentanaProductos extends JDialog implements ActionListener {
         if (e.getSource() == btnConsultar) {
             consultar();
         } else if (e.getSource() == btnComprar) {
-            comprarProducto();
-        } else if (e.getSource() == btnProductos) {
-            miCoordinador.mostrarVentanaListaProductos();
+            comprar();
         } else if (e.getSource() == btnCarrito) {
             miCoordinador.mostrarVentanaCarrito();
+        } else if (e.getSource() == btnProductos) {
+            miCoordinador.mostrarVentanaListaProductos();
         }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Frame parentFrame = new JFrame();
+            JFrame parentFrame = new JFrame();
             VentanaProductos ventana = new VentanaProductos(parentFrame, true);
             Coordinador coordinador = new Coordinador();
             ventana.setCoordinador(coordinador);

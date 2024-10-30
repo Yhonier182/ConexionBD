@@ -1,19 +1,18 @@
 package Vista;
 
-
+import Modelo.ProductoVo;
 import Controlador.Coordinador;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
+public class VentanaListaProductos extends JFrame implements ActionListener {
 
-public class VentanaListaProductos extends JFrame {
-
-    private JButton btnVerProductos;  // Botón para abrir la ventana de productos
+    private JButton btnVerProductos; // Botón para abrir la ventana de productos
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     private Coordinador miCoordinador;
@@ -21,92 +20,108 @@ public class VentanaListaProductos extends JFrame {
     public VentanaListaProductos() {
         setTitle("Lista de Productos");
         setSize(900, 600);
-        setLocationRelativeTo(null);  // Centra la ventana de VentanaLista
+        setLocationRelativeTo(null); // Centra la ventana
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Inicializar los datos de la tabla
-        String[] columnas = {"Producto", "Precio"};
+        // Inicializar datos de la tabla
+        String[] columnas = {"idProducto", "nombreProducto", "descripcion", "Precio", "Cantidad"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaProductos = new JTable(modeloTabla);
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
 
-        // Crear un panel de botones
-        JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
+        // Crear panel de botones
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        // Crear el botón para abrir VistaProductos
+        // Botón "Ver Productos" para abrir VentanaProductos
         btnVerProductos = new JButton("Ver Productos");
         styleButton(btnVerProductos);
+        btnVerProductos.addActionListener(this);
 
-        // Acción para abrir VistaProductos
-        btnVerProductos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirVistaProductos();
-            }
-        });
+        panelBotones.add(btnVerProductos); // Agregar botón al panel de botones
 
-        // Añadir el botón al panel
-        panelBotones.add(btnVerProductos);
-
-        // Crear un panel principal y añadir el panel de botones y la tabla
+        // Panel principal con tabla y botones
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.add(scrollPaneProductos, BorderLayout.CENTER);
         panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
 
-        // Añadir el panel principal a la ventana
         add(panelPrincipal);
 
-        // Para probar la tabla con datos de ejemplo
-        List<String[]> productos = new ArrayList<>();
-        productos.add(new String[]{"Producto 1", "10"});
-        productos.add(new String[]{"Producto 2", "20"});
-        productos.add(new String[]{"Producto 3", "30"});
-
-        actualizarTabla(productos);
+        // Llenar la tabla con productos iniciales desde la base de datos
+        actualizarTablaProductos();
     }
 
-    // Método para actualizar la tabla con los productos
-    public void actualizarTabla(List<String[]> productos) {
-        // Limpiar la tabla antes de llenarla
-        modeloTabla.setRowCount(0);
+    // Método para actualizar la tabla con productos desde la base de datos
+    private void actualizarTablaProductos() {
+        if (miCoordinador == null) {
+            JOptionPane.showMessageDialog(this, "Coordinador no asignado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Añadir los productos a la tabla
-        for (String[] producto : productos) {
-            modeloTabla.addRow(producto);
+        ArrayList<ProductoVo> productos = miCoordinador.listarProductos(); // Obtener productos desde Coordinador
+        if (productos == null || productos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron productos en la base de datos.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        modeloTabla.setRowCount(0); // Limpiar tabla antes de agregar nuevos datos
+
+        for (ProductoVo producto : productos) {
+            String[] datos = {
+                    producto.getIdProducto(),
+                    producto.getNombre(),
+                    producto.getDescripcion(),
+                    String.valueOf(producto.getPrecio()),
+                    String.valueOf(producto.getCantidad()),
+
+            };
+            modeloTabla.addRow(datos); // Agregar producto a la tabla
         }
     }
 
-    // Método para abrir VistaProductos
+    // Estilo de botones
+    private void styleButton(JButton button) {
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBackground(new Color(0, 122, 255));
+        button.setForeground(Color.WHITE);
+        button.setPreferredSize(new Dimension(200, 40));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(new Color(0, 100, 200), 2));
+    }
+
+    // Manejo de eventos de los botones
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnVerProductos) {
+            actualizarTablaProductos();
+            abrirVistaProductos();
+        }
+    }
+
+    // Método para abrir VentanaProductos
     private void abrirVistaProductos() {
-        if (miCoordinador != null) { // Verifica que miCoordinador esté inicializado
-            VentanaProductos vistaProductos = new VentanaProductos(null, true);
-            vistaProductos.setCoordinador(miCoordinador); // Asegura que el coordinador está configurado
+        if (miCoordinador != null) {
+            VentanaProductos vistaProductos = new VentanaProductos(this, true);
+            vistaProductos.setCoordinador(miCoordinador); // Pasar el coordinador
             vistaProductos.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Coordinador no asignado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Método para dar estilo a los botones
-    private void styleButton(JButton button) {
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setBackground(new Color(0, 122, 255));
-        button.setForeground(Color.WHITE);
-        button.setPreferredSize(new Dimension(150, 40));
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(new Color(0, 100, 200), 2));
+    // Método para establecer el Coordinador
+    public void setCoordinador(Coordinador miCoordinador) {
+        this.miCoordinador = miCoordinador;
     }
 
-    public static void main(String args[]) {
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
+    // Método principal para iniciar la ventana
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Coordinador coordinador = new Coordinador();
             VentanaListaProductos ventanaLista = new VentanaListaProductos();
+            ventanaLista.setCoordinador(coordinador); // Asignar coordinador
+            ventanaLista.actualizarTablaProductos();
             ventanaLista.setVisible(true);
+
         });
     }
 
-    public void setCoordinador(Coordinador coordinador) {
-        this.miCoordinador=miCoordinador;
-    }
 }

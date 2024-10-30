@@ -8,7 +8,7 @@ import Modelo.UsuarioVo;
 import Vista.*;
 import conexion.Conexion;
 
-import java.sql.DatabaseMetaData;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 public class Coordinador {
@@ -26,7 +26,8 @@ public class Coordinador {
     private Conexion conexion;
 
     public Coordinador() {
-        this.conexion = new Conexion();
+        Connection conexion = Conexion.getInstance().getConnection();
+
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
         this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao

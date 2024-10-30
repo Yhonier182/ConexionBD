@@ -221,6 +221,10 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             registrarUsuario();
             limpiarVentana();
         }
+
+        if (e.getSource()== btonConsultar){
+            buscarUsuario();
+        }
     }
 
     public void asignarPrivilegios(int index, String nombre) {

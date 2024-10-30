@@ -20,6 +20,7 @@ public class Aplicacion {
 		// Ventanas adicionales
 		VentanaConsultaIndividual miVentanaConsultaIndividual = new VentanaConsultaIndividual(miVentana, true);
 		InactivarUsuarioUI miInactivarUsuarioUI = new InactivarUsuarioUI();
+		ventanaUsuarios ventanaUsuarios = new ventanaUsuarios();
 
 
 		UsuarioDao miUsuarioDao = new UsuarioDao();
@@ -39,6 +40,7 @@ public class Aplicacion {
 		miCoordinador.setVentanaConsultaIndividual(miVentanaConsultaIndividual);
 		miCoordinador.setUsuarioDao(miUsuarioDao);
 		miCoordinador.setInactivarUsuarioUI(miInactivarUsuarioUI);
+
 
 		// Mostramos las ventanas
 		miLogin.setVisible(true);

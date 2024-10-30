@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class ProductoDao {
 
+    // actuali
+
     private Coordinador miCoordinador;
 
     public void setCoordinador(Coordinador miCoordinador) {

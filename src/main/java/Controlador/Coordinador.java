@@ -151,10 +151,6 @@ public class Coordinador {
         ventanaProductos.setVisible(true);
     }
 
-    // Método de compra de producto
-    public boolean comprar(String idProducto) {
-        return miProductoDao.comprarProducto(idProducto);
-    }
 
     public void mostrarVentanaListaProductos(VentanaProductos ventanaProductos) {
         if (miVentanaLista == null) {

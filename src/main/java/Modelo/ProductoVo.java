@@ -2,7 +2,13 @@ package Modelo;
 
 public class ProductoVo {
     private String idProducto;
-    private String nombre;
+    private String nombreProducto;
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    private String descripcion;
     private int precio;
     private int cantidad;
 
@@ -15,11 +21,11 @@ public class ProductoVo {
     }
 
     public String getNombre() {
-        return nombre;
+        return nombreProducto;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public int getPrecio() {
@@ -36,6 +42,9 @@ public class ProductoVo {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public void setDescripcion(String descripcion) { this.descripcion=descripcion;
     }
 }
 

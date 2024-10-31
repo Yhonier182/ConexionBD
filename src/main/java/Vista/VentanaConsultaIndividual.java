@@ -5,190 +5,190 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import Controlador.Coordinador;
 import Modelo.UsuarioVo;
+import java.awt.Color;
 
 public class VentanaConsultaIndividual extends JDialog implements ActionListener {
 
     private JLabel LabelDireccion, TituloConsulta, labelDocumento, labelEdad, labelNombre, labelProfesion, labelTelefono, labelPassword, labelTipo, labelUsername, labelEstado;
     private JButton btonCancelar, btonConsultar, btonActualizar, btonEliminar, btonRegistrar;
     private JTextField campoTelefono, campoDireccion, campoDocumento, campoEdad, campoNombre, campoProfesion, campoPassword, campoBuscarUsuario;
-    private JComboBox<String> comboTipo, comboEstado; // Cambiado a JComboBox
+    private JComboBox<String> comboTipo, comboEstado;
     private JTextField campoUsername;
-    private javax.swing.JPanel panelConsulta;
-    private javax.swing.JSeparator separadorInferior, separadorSuperior;
+    private JPanel panelConsulta;
+    private JSeparator separadorInferior, separadorSuperior;
     private Coordinador miCoordinador;
 
     public VentanaConsultaIndividual(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setSize(800, 450);
+        setSize(800, 500);
         setResizable(false);
         setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-        panelConsulta = new javax.swing.JPanel();
-        TituloConsulta = new javax.swing.JLabel();
-        labelProfesion = new javax.swing.JLabel();
-        labelTelefono = new javax.swing.JLabel();
-        labelDocumento = new javax.swing.JLabel();
-        labelEdad = new javax.swing.JLabel();
-        LabelDireccion = new javax.swing.JLabel();
-        labelNombre = new javax.swing.JLabel();
-        labelPassword = new javax.swing.JLabel();
-        labelTipo = new javax.swing.JLabel();
-        labelUsername = new javax.swing.JLabel();
-        labelEstado = new javax.swing.JLabel();
-        separadorInferior = new javax.swing.JSeparator();
-        campoNombre = new javax.swing.JTextField();
-        campoDireccion = new javax.swing.JTextField();
-        campoTelefono = new javax.swing.JTextField();
-        campoProfesion = new javax.swing.JTextField();
-        campoEdad = new javax.swing.JTextField();
-        campoUsername = new javax.swing.JTextField();
-        separadorSuperior = new javax.swing.JSeparator();
-        btonCancelar = new javax.swing.JButton();
-        btonConsultar = new javax.swing.JButton();
-        campoDocumento = new javax.swing.JTextField();
-        campoPassword = new javax.swing.JTextField();
-        campoBuscarUsuario = new javax.swing.JTextField();
-        btonActualizar = new javax.swing.JButton();
-        btonEliminar = new javax.swing.JButton();
-        btonRegistrar = new javax.swing.JButton();
-
-        // Inicialización de JComboBox para Tipo y Estado
-        comboTipo = new JComboBox<>(new String[]{" Administrador", " Usuario", " Secretaria"});
-        comboEstado = new JComboBox<>(new String[]{" Inactivo", " Activo"}); // Cambiado a incluir el estado en texto
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        panelConsulta.setBackground(new java.awt.Color(204, 204, 204));
+        panelConsulta = new JPanel();
         panelConsulta.setLayout(null);
+        panelConsulta.setBackground(new Color(240, 240, 240));
 
+        // Título principal
+        TituloConsulta = new JLabel("Consultar Usuario", SwingConstants.CENTER);
         TituloConsulta.setFont(new java.awt.Font("Tempus Sans ITC", 1, 36));
-        TituloConsulta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TituloConsulta.setText("Consultar Usuario");
-        TituloConsulta.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelConsulta.add(TituloConsulta);
+        TituloConsulta.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         TituloConsulta.setBounds(20, 10, 660, 60);
+        TituloConsulta.setForeground(new Color(62, 141, 227));
+        panelConsulta.add(TituloConsulta);
 
-        labelProfesion.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelProfesion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelProfesion.setText("Profesión:");
-        panelConsulta.add(labelProfesion);
-        labelProfesion.setBounds(0, 190, 90, 20);
 
-        labelTelefono.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelTelefono.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelTelefono.setText("Teléfono:");
-        panelConsulta.add(labelTelefono);
-        labelTelefono.setBounds(400, 220, 100, 20);
-
+        // Labels y campos de texto
+        labelDocumento = new JLabel("*Documento:", SwingConstants.RIGHT);
         labelDocumento.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelDocumento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelDocumento.setText("*Documento:");
-        panelConsulta.add(labelDocumento);
         labelDocumento.setBounds(0, 130, 90, 20);
+        panelConsulta.add(labelDocumento);
 
-        labelEdad.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelEdad.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelEdad.setText("Edad:");
-        panelConsulta.add(labelEdad);
-        labelEdad.setBounds(400, 190, 100, 20);
+        campoDocumento = new JTextField();
+        campoDocumento.setBounds(100, 130, 300, 20);
+        panelConsulta.add(campoDocumento);
 
-        LabelDireccion.setFont(new java.awt.Font("Verdana", 0, 12));
-        LabelDireccion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        LabelDireccion.setText("Dirección:");
-        panelConsulta.add(LabelDireccion);
-        LabelDireccion.setBounds(0, 220, 90, 20);
-
+        labelNombre = new JLabel("*Nombre:", SwingConstants.RIGHT);
         labelNombre.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelNombre.setText("*Nombre:");
-        panelConsulta.add(labelNombre);
         labelNombre.setBounds(0, 160, 90, 20);
+        panelConsulta.add(labelNombre);
 
-        labelPassword.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelPassword.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelPassword.setText("*Contraseña:");
-        panelConsulta.add(labelPassword);
-        labelPassword.setBounds(400, 130, 100, 20);
-
-        labelTipo.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelTipo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelTipo.setText("Tipo:");
-        panelConsulta.add(labelTipo);
-        labelTipo.setBounds(0, 250, 90, 20);
-
-        labelUsername.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelUsername.setText("Usuario:");
-        panelConsulta.add(labelUsername);
-        labelUsername.setBounds(400, 160, 100, 20);
-
-        labelEstado.setFont(new java.awt.Font("Verdana", 0, 12));
-        labelEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelEstado.setText("Estado:");
-        panelConsulta.add(labelEstado);
-        labelEstado.setBounds(0, 280, 90, 20);
-
-        panelConsulta.add(separadorInferior);
-        separadorInferior.setBounds(20, 320, 660, 10);
-        panelConsulta.add(campoNombre);
+        campoNombre = new JTextField();
         campoNombre.setBounds(100, 160, 300, 20);
-        panelConsulta.add(campoDireccion);
-        campoDireccion.setBounds(100, 220, 300, 20);
-        panelConsulta.add(campoTelefono);
-        campoTelefono.setBounds(510, 220, 170, 20);
-        panelConsulta.add(campoProfesion);
-        campoProfesion.setBounds(100, 190, 300, 20);
-        panelConsulta.add(campoEdad);
-        campoEdad.setBounds(510, 190, 170, 20);
-        panelConsulta.add(campoPassword);
-        campoPassword.setBounds(510, 130, 170, 20);
-        panelConsulta.add(comboTipo); // Añadir JComboBox de Tipo
-        comboTipo.setBounds(100, 250, 300, 20);
-        panelConsulta.add(campoUsername);
-        campoUsername.setBounds(510, 160, 170, 20);
-        panelConsulta.add(comboEstado); // Añadir JComboBox de Estado
-        comboEstado.setBounds(100, 280, 300, 20);
-        panelConsulta.add(separadorSuperior);
-        separadorSuperior.setBounds(20, 120, 660, 10);
+        panelConsulta.add(campoNombre);
 
+        labelProfesion = new JLabel("Profesión:", SwingConstants.RIGHT);
+        labelProfesion.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelProfesion.setBounds(0, 190, 90, 20);
+        panelConsulta.add(labelProfesion);
+
+        campoProfesion = new JTextField();
+        campoProfesion.setBounds(100, 190, 300, 20);
+        panelConsulta.add(campoProfesion);
+
+        LabelDireccion = new JLabel("Dirección:", SwingConstants.RIGHT);
+        LabelDireccion.setFont(new java.awt.Font("Verdana", 0, 12));
+        LabelDireccion.setBounds(0, 220, 90, 20);
+        panelConsulta.add(LabelDireccion);
+
+        campoDireccion = new JTextField();
+        campoDireccion.setBounds(100, 220, 300, 20);
+        panelConsulta.add(campoDireccion);
+
+        labelTelefono = new JLabel("Teléfono:", SwingConstants.RIGHT);
+        labelTelefono.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelTelefono.setBounds(400, 220, 100, 20);
+        panelConsulta.add(labelTelefono);
+
+        campoTelefono = new JTextField();
+        campoTelefono.setBounds(510, 220, 170, 20);
+        panelConsulta.add(campoTelefono);
+
+        labelEdad = new JLabel("Edad:", SwingConstants.RIGHT);
+        labelEdad.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelEdad.setBounds(400, 190, 100, 20);
+        panelConsulta.add(labelEdad);
+
+        campoEdad = new JTextField();
+        campoEdad.setBounds(510, 190, 170, 20);
+        panelConsulta.add(campoEdad);
+
+        labelPassword = new JLabel("*Contraseña:", SwingConstants.RIGHT);
+        labelPassword.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelPassword.setBounds(400, 130, 100, 20);
+        panelConsulta.add(labelPassword);
+
+        campoPassword = new JTextField();
+        campoPassword.setBounds(510, 130, 170, 20);
+        panelConsulta.add(campoPassword);
+
+        labelUsername = new JLabel("Usuario:", SwingConstants.RIGHT);
+        labelUsername.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelUsername.setBounds(400, 160, 100, 20);
+        panelConsulta.add(labelUsername);
+
+        campoUsername = new JTextField();
+        campoUsername.setBounds(510, 160, 170, 20);
+        panelConsulta.add(campoUsername);
+
+        labelTipo = new JLabel("Tipo:", SwingConstants.RIGHT);
+        labelTipo.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelTipo.setBounds(0, 250, 90, 20);
+        panelConsulta.add(labelTipo);
+
+        comboTipo = new JComboBox<>(new String[]{"Administrador", "Usuario", "Secretaria"});
+        comboTipo.setBounds(100, 250, 300, 20);
+        panelConsulta.add(comboTipo);
+
+        labelEstado = new JLabel("Estado:", SwingConstants.RIGHT);
+        labelEstado.setFont(new java.awt.Font("Verdana", 0, 12));
+        labelEstado.setBounds(0, 280, 90, 20);
+        panelConsulta.add(labelEstado);
+
+        comboEstado = new JComboBox<>(new String[]{"Inactivo", "Activo"});
+        comboEstado.setBounds(100, 280, 300, 20);
+        panelConsulta.add(comboEstado);
+
+        // Separadores
+        separadorSuperior = new JSeparator();
+        separadorSuperior.setBounds(20, 120, 660, 10);
+        panelConsulta.add(separadorSuperior);
+
+        separadorInferior = new JSeparator();
+        separadorInferior.setBounds(20, 320, 660, 10);
+        panelConsulta.add(separadorInferior);
+
+        // Campo de búsqueda y botón
+        campoBuscarUsuario = new JTextField();
         campoBuscarUsuario.setBounds(100, 90, 300, 20);
         panelConsulta.add(campoBuscarUsuario);
 
-        btonCancelar.setFont(new java.awt.Font("Verdana", 0, 14));
-        btonCancelar.setText("Cancelar");
-        panelConsulta.add(btonCancelar);
-        btonCancelar.setBounds(510, 350, 170, 30);
-        btonCancelar.addActionListener(this);
-
+        btonConsultar = new JButton("Buscar");
         btonConsultar.setFont(new java.awt.Font("Verdana", 0, 14));
-        btonConsultar.setText("Buscar");
+        btonConsultar.setBounds(420, 90, 110, 20);
         btonConsultar.addActionListener(this);
         panelConsulta.add(btonConsultar);
-        btonConsultar.setBounds(420, 90, 110, 20);
+        btonConsultar.setBackground(new Color(54, 228, 158));
+        btonConsultar.setForeground(Color.BLACK);
 
+
+        // Botones de acción
+        btonCancelar = new JButton("Cancelar");
+        btonCancelar.setFont(new java.awt.Font("Verdana", 0, 14));
+        btonCancelar.setBounds(510, 350, 170, 30);
+        btonCancelar.addActionListener(this);
+        panelConsulta.add(btonCancelar);
+        btonCancelar.setBackground(new Color(255, 102, 102));
+        btonCancelar.setForeground(Color.BLACK);
+
+
+        btonActualizar = new JButton("Actualizar");
         btonActualizar.setFont(new java.awt.Font("Verdana", 0, 14));
-        btonActualizar.setText("Actualizar");
-        panelConsulta.add(btonActualizar);
         btonActualizar.setBounds(110, 350, 170, 30);
         btonActualizar.addActionListener(this);
+        panelConsulta.add(btonActualizar);
+        btonActualizar.setBackground(new Color(102, 178, 255));
+        btonActualizar.setForeground(Color.BLACK);
 
+        btonEliminar = new JButton("Eliminar");
         btonEliminar.setFont(new java.awt.Font("Verdana", 0, 14));
-        btonEliminar.setText("Eliminar");
-        panelConsulta.add(btonEliminar);
         btonEliminar.setBounds(310, 350, 170, 30);
         btonEliminar.addActionListener(this);
+        panelConsulta.add(btonEliminar);
+        btonEliminar.setBackground(new Color(255, 51, 51));
+        btonEliminar.setForeground(Color.BLACK);
 
+
+        btonRegistrar = new JButton("Registrar Usuario");
         btonRegistrar.setFont(new java.awt.Font("Verdana", 0, 14));
-        btonRegistrar.setText("Registrar Usuario");
-        panelConsulta.add(btonRegistrar);
         btonRegistrar.setBounds(510, 250, 170, 30);
         btonRegistrar.addActionListener(this);
-
-        panelConsulta.add(campoDocumento);
-        campoDocumento.setBounds(100, 130, 300, 20);
+        panelConsulta.add(btonRegistrar);
+        btonRegistrar.setBackground(new Color(102, 255, 102));
+        btonRegistrar.setForeground(Color.BLACK);
 
         getContentPane().add(panelConsulta);
         panelConsulta.setBounds(0, 0, 710, 390);
@@ -205,24 +205,19 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             limpiarVentana();
             dispose();
         }
-
         if (e.getSource() == btonActualizar) {
             actualizaUsuario();
             limpiarVentana();
-
         }
-
         if (e.getSource() == btonEliminar) {
             eliminaUsuario();
             limpiarVentana();
         }
-
-        if (e.getSource()== btonRegistrar){
+        if (e.getSource() == btonRegistrar) {
             registrarUsuario();
             limpiarVentana();
         }
-
-        if (e.getSource()== btonConsultar){
+        if (e.getSource() == btonConsultar) {
             buscarUsuario();
         }
     }
@@ -274,7 +269,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         campoEdad.setText("");
         comboTipo.setSelectedIndex(0);
         campoUsername.setText("");
-        comboEstado.setSelectedIndex(0); // Establecer el estado a Inactivo
+        comboEstado.setSelectedIndex(0);
     }
 
     private void buscarUsuario() {
@@ -293,16 +288,15 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             campoEdad.setText(String.valueOf(usuarioVO.getEdad()));
             campoPassword.setText(usuarioVO.getPassword());
 
-            comboTipo.setSelectedIndex(usuarioVO.getTipo() - 1); // Ajuster  JComboBox
+            comboTipo.setSelectedIndex(usuarioVO.getTipo() - 1);
             campoUsername.setText(usuarioVO.getUsername());
-            comboEstado.setSelectedIndex(usuarioVO.getEstado()); // Asegúrar que retorne 0 o 1
+            comboEstado.setSelectedIndex(usuarioVO.getEstado());
         } else {
             JOptionPane.showMessageDialog(null, "El usuario no se encuentra registrado en el sistema", "Datos Inexistentes", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     private void actualizaUsuario() {
-
         if (campoDocumento.getText().trim().isEmpty() ||
                 campoNombre.getText().trim().isEmpty() ||
                 campoEdad.getText().trim().isEmpty() ||
@@ -311,7 +305,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
                 campoDireccion.getText().trim().isEmpty() ||
                 campoPassword.getText().trim().isEmpty() ||
                 campoUsername.getText().trim().isEmpty()) {
-
             JOptionPane.showMessageDialog(null, "Debe completar todos los campos obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -328,7 +321,7 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             miUsuarioVo.setPassword(campoPassword.getText().trim());
             miUsuarioVo.setTipo(comboTipo.getSelectedIndex() + 1);
             miUsuarioVo.setUsername(campoUsername.getText().trim());
-            miUsuarioVo.setEstado(comboEstado.getSelectedIndex()); // Guardar 0 o 1 según selección
+            miUsuarioVo.setEstado(comboEstado.getSelectedIndex());
 
             String actualiza = miCoordinador.validarCampos(miUsuarioVo) ? miCoordinador.actualizaUsuario(miUsuarioVo) : "mas_datos";
 
@@ -343,7 +336,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
         limpiarVentana();
     }
-
 
     private void eliminaUsuario() {
         String documento = campoDocumento.getText().trim();
@@ -362,11 +354,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         } else {
             JOptionPane.showMessageDialog(null, "Ingrese un documento ", "Información", JOptionPane.WARNING_MESSAGE);
         }
-
     }
 
     private void registrarUsuario() {
-
         if (campoNombre.getText().trim().isEmpty() ||
                 campoDocumento.getText().trim().isEmpty() ||
                 campoEdad.getText().trim().isEmpty() ||
@@ -391,7 +381,6 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         nuevoUsuario.setUsername(campoUsername.getText().trim());
         nuevoUsuario.setEstado(comboEstado.getSelectedIndex());
 
-
         String resultado = miCoordinador.registrarUsuario(nuevoUsuario);
         if ("ok".equals(resultado)) {
             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
@@ -402,24 +391,15 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
     }
 
-
-
     public static void main(String[] args) {
-        // Crear un JFrame como padre de la JDialog
         JFrame parentFrame = new JFrame();
         parentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        parentFrame.setSize(400, 300); // Tamaño del JFrame
+        parentFrame.setSize(400, 300);
         parentFrame.setLocationRelativeTo(null);
 
-        // Crear el coordinador
-        Coordinador coordinador = new Coordinador(); // Aquí deberías inicializar tu Coordinador correctamente
-
-        // Crear la ventana de consulta individual
+        Coordinador coordinador = new Coordinador();
         VentanaConsultaIndividual ventana = new VentanaConsultaIndividual(parentFrame, true);
-        ventana.setCoordinador(coordinador); // Asignar el coordinador
-        ventana.setVisible(true); // Mostrar la ventana
-
-        // Cerrar el parent frame al salir
-        parentFrame.setVisible(true);
+        ventana.setCoordinador(coordinador);
+        ventana.setVisible(true);
     }
 }

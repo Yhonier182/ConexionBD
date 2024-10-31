@@ -9,6 +9,7 @@ import Vista.*;
 import conexion.Conexion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Coordinador {
 
@@ -29,7 +30,7 @@ public class Coordinador {
     public Coordinador() {
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
-        this.miProductoDao.setCoordinador(this); // Set Coordinador to ProductoDao
+        this.miProductoDao.setCoordinador(this);
 
     }
 
@@ -142,33 +143,8 @@ public class Coordinador {
      }
 
 
+   
 
-    public void mostrarVentanaProductos() {
-        if (ventanaProductos == null) {
-            ventanaProductos = new VentanaProductos(null, true);
-            ventanaProductos.setCoordinador(this);
-        }
-        ventanaProductos.setVisible(true);
-    }
-
-
-    public void mostrarVentanaListaProductos(VentanaProductos ventanaProductos) {
-        if (miVentanaLista == null) {
-            miVentanaLista = new VentanaListaProductos();
-            miVentanaLista.setCoordinador(this); // Asigna el Coordinador
-        }
-        miVentanaLista.actualizarTablaProductos();
-
-        miVentanaLista.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                ventanaProductos.limpiarCampos(); // Limpia los campos
-                ventanaProductos.setVisible(false); // Restaura VentanaProductos
-            }
-        });
-
-        miVentanaLista.setVisible(true); // Muestra la lista de productos
-    }
 
     public void mostrarVentanaUsuarios() {
         if (USER == null) {
@@ -178,12 +154,25 @@ public class Coordinador {
         USER.setVisible(true);
     }
 
-
-
     public ArrayList<ProductoVo> listarProductos() {
         return miProductoDao.listarProductos();
     }
+
+    public void mostrarVentanaProductos() {
+        if (ventanaProductos == null) {
+            ventanaProductos = new VentanaProductos();
+            ventanaProductos.setCoordinador(this);
+        }
+        ventanaProductos.setVisible(true);
     }
+
+    public void mostrarVentanaListaProductos() {
+        VentanaListaProductos ventanaLista = new VentanaListaProductos();
+        ventanaLista.actualizarTablaProductos();
+        ventanaLista.setVisible(true);
+    }
+
+}
 
 
 

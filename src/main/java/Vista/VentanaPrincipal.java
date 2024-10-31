@@ -153,7 +153,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         if (e.getSource() == botonMostrarProductos) {
             miCoordinador.mostrarVentanaProductos();
         }
-        if (e.getSource() == botonMostrarUsuarios) { // Agregar acción para el botón Mostrar Usuarios
+        if (e.getSource() == botonMostrarUsuarios) {
             miCoordinador.mostrarVentanaUsuarios();
         }
     }

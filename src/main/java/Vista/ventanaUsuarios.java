@@ -17,8 +17,8 @@ public class ventanaUsuarios extends JFrame {
 
     public ventanaUsuarios() {
         initComponents();
-        setLocationRelativeTo(null);  // Centrar la ventana en la pantalla
-        setSize(1200, 600);           // Ajusta el tamaño de la ventana a 1000x600 píxeles
+        setSize(1200, 600);           // Ajusta el tamaño de la ventana a 1200x600 píxeles
+        setLocationRelativeTo(null);   // Centrar la ventana en la pantalla
         setTitle("Gestión de Usuarios");
     }
 

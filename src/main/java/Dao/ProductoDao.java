@@ -45,8 +45,6 @@ public class ProductoDao {
              PreparedStatement statement = connection.prepareStatement(consulta);
              ResultSet resultSet = statement.executeQuery()) {
 
-            System.out.println("Consulta ejecutada: " + consulta);
-
             while (resultSet.next()) {
                 ProductoVo producto = new ProductoVo();
                 producto.setIdProducto(resultSet.getString("idProducto"));
@@ -59,22 +57,20 @@ public class ProductoDao {
         } catch (SQLException e) {
             System.out.println("Error al listar productos: " + e.getMessage());
         }
-        System.out.println("Total de productos obtenidos: " + productos.size());
         return productos;
     }
 
 
-    // Método para actualizar un producto
     public boolean actualizarProducto(ProductoVo producto) {
-        String consulta = "UPDATE producto SET nombreProducto = ?, cantidad = ?, descirpcion =?, precio = ? WHERE idProducto = ?";
+        String consulta = "UPDATE producto SET nombreProducto = ?, cantidad = ?, descripcion = ?, precio = ? WHERE idProducto = ?";
         try (Connection connection = Conexion.getInstance().getConnection();
              PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
             preStatement.setString(1, producto.getNombre());
             preStatement.setInt(2, producto.getCantidad());
             preStatement.setString(3, producto.getDescripcion());
-            preStatement.setInt(3, producto.getPrecio());
-            preStatement.setString(4, producto.getIdProducto());
+            preStatement.setInt(4, producto.getPrecio());
+            preStatement.setString(5, producto.getIdProducto());
             preStatement.executeUpdate();
             return true;
 
@@ -83,6 +79,7 @@ public class ProductoDao {
             return false;
         }
     }
+
     // Método para eliminar un producto
     public boolean eliminarProducto(String idProducto) {
         String consulta = "DELETE FROM producto WHERE idProducto = ?";
@@ -98,22 +95,7 @@ public class ProductoDao {
             return false;
         }
     }
-    //metodpo para comprar producto
-    public boolean comprarProducto(String idProducto, String documento) {
-        String consulta = "INSERT INTO usuario_tiene_producto (idProducto, documento) VALUES (?, ?)";
-        try (Connection connection = Conexion.getInstance().getConnection();
-             PreparedStatement preStatement = connection.prepareStatement(consulta)) {
 
-            preStatement.setString(1, idProducto);
-            preStatement.setString(2, documento);
-            preStatement.execute();
-            return true;
-
-        } catch (SQLException e) {
-            System.out.println("Error al comprar producto: " + e.getMessage());
-            return false;
-        }
-    }
     //metodo para consultar producto
     public ProductoVo consultarProducto(String idProducto) {
         ProductoVo producto = null;
@@ -164,24 +146,6 @@ public class ProductoDao {
         }
         return producto;
     }
-    //metodo para listar compras en carrito
-    public ArrayList<String> listarCarrito(String documentoUsuario) {
-        ArrayList<String> lista = new ArrayList<>();
-        String consulta = "SELECT P.nombre, P.precio FROM producto P JOIN usuario_tiene_producto UtP ON UtP.idProducto = P.idProducto WHERE UtP.documento = ?";
 
-        try (Connection connection = Conexion.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(consulta)) {
-
-            statement.setString(1, documentoUsuario);
-            try (ResultSet result = statement.executeQuery()) {
-                while (result.next()) {
-                    lista.add(result.getString("nombreProducto") + " " + result.getInt("precio") + "$");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al listar productos en el carrito: " + e.getMessage());
-        }
-        return lista;
-    }
 }
 

@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class VentanaProductos extends JDialog implements ActionListener {
-    private Coordinador miCoordinador;
 
+    private Coordinador miCoordinador;
     private JPanel panelProductos;
     private JLabel lblTitulo, lblIngresoNombre, lblIngresoID, lblPrecio, lblCantidad, lblPrecioValue, lblCantidadValue;
     private JTextField campoID, campoNombre;
@@ -18,17 +18,15 @@ public class VentanaProductos extends JDialog implements ActionListener {
     private JSeparator separadorSuperior, separadorInferior;
     private ProductoVo miProducto;
 
-
-
-    public VentanaProductos(Frame parent, boolean modal) {
-        super(parent, modal);
+    public VentanaProductos() {
         initComponents();
         setSize(750, 400);
         setResizable(false);
         setLocationRelativeTo(null);
     }
+
     private void initComponents() {
-        // Panel principal con estilo de fondo y borde
+        miCoordinador = new Coordinador();
         panelProductos = new JPanel();
         panelProductos.setBackground(new Color(238, 238, 238));
         panelProductos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -129,9 +127,10 @@ public class VentanaProductos extends JDialog implements ActionListener {
         pack();
     }
 
-    public void setCoordinador(Coordinador miCoordinador) {
-        this.miCoordinador = miCoordinador;
+    public void setCoordinador(Coordinador coordinador) {
+        this.miCoordinador = coordinador;
     }
+
 
     private void consultar() {
         String id = campoID.getText();
@@ -154,14 +153,14 @@ public class VentanaProductos extends JDialog implements ActionListener {
         }
     }
 
-
     private void comprarProducto() {
-        if (btnComprar != null){
+        if (miProducto != null) {
             JOptionPane.showMessageDialog(this, "Se ha realizado la compra de " + miProducto.getNombre() + " exitosamente");
         } else {
             JOptionPane.showMessageDialog(this, "No se ha podido realizar la compra", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public void limpiarCampos() {
         campoID.setText("");
         campoNombre.setText("");
@@ -176,18 +175,13 @@ public class VentanaProductos extends JDialog implements ActionListener {
         } else if (e.getSource() == btnComprar) {
             comprarProducto();
         } else if (e.getSource() == btnProductos) {
-            this.setVisible(false);
-            miCoordinador.mostrarVentanaListaProductos(this); // Abre la ventana de lista de productos
-
+           miCoordinador.mostrarVentanaListaProductos();
         }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame parentFrame = new JFrame();
-            VentanaProductos ventana = new VentanaProductos(parentFrame, true);
-            Coordinador coordinador = new Coordinador();
-            ventana.setCoordinador(coordinador);
+            VentanaProductos ventana = new VentanaProductos();
             ventana.setVisible(true);
         });
     }

@@ -20,7 +20,6 @@ public class Aplicacion {
 		// Ventanas adicionales
 		VentanaConsultaIndividual miVentanaConsultaIndividual = new VentanaConsultaIndividual(miVentana, true);
 		InactivarUsuarioUI miInactivarUsuarioUI = new InactivarUsuarioUI();
-		ventanaUsuarios ventanaUsuarios = new ventanaUsuarios();
 
 
 		UsuarioDao miUsuarioDao = new UsuarioDao();

@@ -21,16 +21,26 @@ public class Coordinador {
     private InactivarUsuarioUI inactivarUsuarioUI;
     private ventanaUsuarios ventanaUsuarios;
     private Logica miLogica;
+    private int rolActual;
+
 
     // DAO para operaciones de usuario y producto
     private UsuarioDao miUsuarioDao;
     private ProductoDao miProductoDao;
+
 
     // Constructor para inicializar DAOs y asignar el coordinador en el DAO de productos
     public Coordinador() {
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
         this.miProductoDao.setCoordinador(this);  // Se asigna el coordinador al DAO
+    }
+
+    public void setRolActual(int rol) {
+        this.rolActual=rol;
+    }
+    public int getRolActual(){
+        return rolActual;
     }
 
     // ------------------------------------------------------------------------
@@ -116,6 +126,7 @@ public class Coordinador {
     // ------------------------------------------------------------------------
 
     public void asignarPrivilegios(int index, String usuario) {
+        setRolActual(index);
         if (miVentana != null) {
             miVentana.asignarPrivilegios(index, usuario);
         }

@@ -29,6 +29,7 @@ public class VentanaProductos extends JFrame {  // Cambiado de JDialog a JFrame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cerrar ventana al salir
         setLayout(new BorderLayout(10, 10));
         initComponents();
+        configurarPermisos();
         actualizarTabla();
     }
 
@@ -258,6 +259,19 @@ public class VentanaProductos extends JFrame {  // Cambiado de JDialog a JFrame
             });
         }
     }
+    private void configurarPermisos() {
+        int rol=miCoordinador.getRolActual();
+
+        boolean puedeModificar = rol == 1 || rol == 3;
+        btnRegistrar.setEnabled(puedeModificar);
+        btnActualizar.setEnabled(puedeModificar);
+        btnEliminar.setEnabled(puedeModificar);
+
+        boolean puedeComprar = rol == 2 || rol==1 || rol==3;
+        btnComprar.setEnabled(puedeComprar);
+        btnCancelarCompra.setEnabled(puedeComprar);
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

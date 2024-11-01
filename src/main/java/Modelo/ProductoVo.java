@@ -32,8 +32,8 @@ public class ProductoVo {
         return precio;
     }
 
-    public void setPrecio(int precio) {
-        this.precio = precio;
+    public void setPrecio(double precio) {
+        this.precio = (int) precio;
     }
 
     public int getCantidad() {

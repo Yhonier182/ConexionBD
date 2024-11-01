@@ -9,31 +9,33 @@ import Vista.*;
 import conexion.Conexion;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Coordinador {
 
+    // Declaración de ventanas y lógica de negocio
     private VentanaPrincipal miVentana;
     private VentanaLogin miLogin;
-    private Logica miLogica;
     private VentanaConsultaIndividual miVentanaConsultaIndividual;
     private VentanaListaProductos miVentanaLista;
-    private UsuarioDao miUsuarioDao;
-    private ProductoDao miProductoDao;
     private VentanaProductos ventanaProductos;
     private InactivarUsuarioUI inactivarUsuarioUI;
-    private ventanaUsuarios USER;
+    private ventanaUsuarios ventanaUsuarios;
+    private Logica miLogica;
 
+    // DAO para operaciones de usuario y producto
+    private UsuarioDao miUsuarioDao;
+    private ProductoDao miProductoDao;
 
-    private Conexion conexion;
-
+    // Constructor para inicializar DAOs y asignar el coordinador en el DAO de productos
     public Coordinador() {
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
-        this.miProductoDao.setCoordinador(this);
-
+        this.miProductoDao.setCoordinador(this);  // Se asigna el coordinador al DAO
     }
 
+    // ------------------------------------------------------------------------
+    // Métodos de Configuración de Ventanas
+    // ------------------------------------------------------------------------
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
         this.miVentana = miVentana;
@@ -43,25 +45,33 @@ public class Coordinador {
         this.miLogin = miLogin;
     }
 
-    public void setLogica(Logica miLogica) {
-        this.miLogica = miLogica;
-    }
-
     public void setVentanaConsultaIndividual(VentanaConsultaIndividual miVentanaConsultaIndividual) {
         this.miVentanaConsultaIndividual = miVentanaConsultaIndividual;
     }
 
-    public void setUsuarioDao(UsuarioDao miUsuarioDao) {
-        this.miUsuarioDao = miUsuarioDao;
+    public void setInactivarUsuarioUI(InactivarUsuarioUI inactivarUsuarioUI) {
+        this.inactivarUsuarioUI = inactivarUsuarioUI;
     }
 
+    public void setLogica(Logica miLogica) {
+        this.miLogica = miLogica;
+    }
+
+    // ------------------------------------------------------------------------
+    // Métodos para Mostrar Ventanas
+    // ------------------------------------------------------------------------
+
     public void mostrarLogin() {
-        miLogin.limpiar();
-        miLogin.setVisible(true);
+        if (miLogin != null) {
+            miLogin.limpiar();
+            miLogin.setVisible(true);
+        }
     }
 
     public void mostrarVentanaConsulta() {
-        miVentanaConsultaIndividual.setVisible(true);
+        if (miVentanaConsultaIndividual != null) {
+            miVentanaConsultaIndividual.setVisible(true);
+        }
     }
 
     public void mostrarVentanaInactivacion() {
@@ -70,109 +80,136 @@ public class Coordinador {
         }
     }
 
-    public void cerrarVentanaLogin() {
-        miLogin.dispose();
-    }
-
-    public void asignarPrivilegios(int index, String usuario) {
-        miVentana.asignarPrivilegios(index, usuario);
-        miVentanaConsultaIndividual.asignarPrivilegios(index, usuario);
-    }
-
-    public String validarIngreso(int index, String username, String password) {
-        return miLogica.validarIngreso(index, username, password);
-    }
-
-    public String registrarUsuario(UsuarioVo miUsuarioVo) {
-        return miUsuarioDao.registrarUsuario(miUsuarioVo);
-    }
-
-    public boolean validarCampos(UsuarioVo miUsuarioVo) {
-        return miLogica.validarCampos(miUsuarioVo);
-    }
-
-    public Integer validarEdad(int edadIngresada) {
-        return miLogica.validarEdad(edadIngresada);
-    }
-
-    public UsuarioVo consultarUsuario(String username, String password) {
-        return miUsuarioDao.consultarUsuario(username, password);
-    }
-
-    public String actualizaUsuario(UsuarioVo miUsuarioVo) {
-        return miUsuarioDao.actualizaUsuario(miUsuarioVo);
-    }
-
-    public String eliminarUsuario(String documento) {
-        return miUsuarioDao.eliminarUsuario(documento);
-    }
-
-    public Integer validarTipo(String tipoIngresado) {
-        return miLogica.validarTipo(tipoIngresado);
-    }
-
-    public UsuarioVo buscarUsuarioPorDocumento(String documento) {
-        return miUsuarioDao.buscarUsuarioPorDocumento(documento);
-    }
-
-    // Métodos para activar o inactivar usuarios
-    public String inactivarUsuario(String documento) {
-        return miUsuarioDao.inactivarUsuario(documento);
-    }
-
-    public String activarUsuario(String documento) {
-        return miUsuarioDao.activarUsuario(documento);
-    }
-
-    //mostrar ventana De estado del usuario
-    public void setInactivarUsuarioUI(InactivarUsuarioUI inactivarUsuarioUI) {
-        this.inactivarUsuarioUI = inactivarUsuarioUI;
-    }
-
-    public ProductoVo consultarProducto(String id) {
-        return miProductoDao.consultarProducto(id);
-    }
-
-    public ProductoVo consultarProductoPorNombre(String nombre) {
-        return miProductoDao.consultarProductoPorNombre(nombre);
-    }
-
-     //listarUsuarios
-     public ArrayList<UsuarioVo> listarUsuarios() {
-         return miUsuarioDao.listarUsuarios();
-     }
-
-
-   
-
-
     public void mostrarVentanaUsuarios() {
-        if (USER == null) {
-            USER = new ventanaUsuarios();
-            USER.setCoordinador(this);
+        if (ventanaUsuarios == null) {
+            ventanaUsuarios = new ventanaUsuarios();
+            ventanaUsuarios.setCoordinador(this);
         }
-        USER.setVisible(true);
-    }
-
-    public ArrayList<ProductoVo> listarProductos() {
-        return miProductoDao.listarProductos();
+        ventanaUsuarios.setVisible(true);
     }
 
     public void mostrarVentanaProductos() {
         if (ventanaProductos == null) {
-            ventanaProductos = new VentanaProductos();
+            ventanaProductos = new VentanaProductos(this);
             ventanaProductos.setCoordinador(this);
         }
         ventanaProductos.setVisible(true);
     }
 
     public void mostrarVentanaListaProductos() {
-        VentanaListaProductos ventanaLista = new VentanaListaProductos();
-        ventanaLista.actualizarTablaProductos();
-        ventanaLista.setVisible(true);
+        if (miVentanaLista == null) {
+            miVentanaLista = new VentanaListaProductos();
+            miVentanaLista.setCoordinador(this);
+        }
+        miVentanaLista.actualizarTablaProductos();
+        miVentanaLista.setVisible(true);
     }
 
+    public void cerrarVentanaLogin() {
+        if (miLogin != null) {
+            miLogin.dispose();
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Métodos de Privilegios y Validación
+    // ------------------------------------------------------------------------
+
+    public void asignarPrivilegios(int index, String usuario) {
+        if (miVentana != null) {
+            miVentana.asignarPrivilegios(index, usuario);
+        }
+        if (miVentanaConsultaIndividual != null) {
+            miVentanaConsultaIndividual.asignarPrivilegios(index, usuario);
+        }
+    }
+
+    public String validarIngreso(int index, String username, String password) {
+        return miLogica != null ? miLogica.validarIngreso(index, username, password) : "";
+    }
+
+    public boolean validarCampos(UsuarioVo miUsuarioVo) {
+        return miLogica != null && miLogica.validarCampos(miUsuarioVo);
+    }
+
+    public Integer validarEdad(int edadIngresada) {
+        return miLogica != null ? miLogica.validarEdad(edadIngresada) : 0;
+    }
+
+    public Integer validarTipo(String tipoIngresado) {
+        return miLogica != null ? miLogica.validarTipo(tipoIngresado) : -1;
+    }
+
+    // ------------------------------------------------------------------------
+    // Métodos para Gestión de Usuarios
+    // ------------------------------------------------------------------------
+
+    public String registrarUsuario(UsuarioVo miUsuarioVo) {
+        return miUsuarioDao != null ? miUsuarioDao.registrarUsuario(miUsuarioVo) : "Error: UsuarioDao no inicializado";
+    }
+
+    public UsuarioVo consultarUsuario(String username, String password) {
+        return miUsuarioDao != null ? miUsuarioDao.consultarUsuario(username, password) : null;
+    }
+
+    public String actualizaUsuario(UsuarioVo miUsuarioVo) {
+        return miUsuarioDao != null ? miUsuarioDao.actualizaUsuario(miUsuarioVo) : "Error: UsuarioDao no inicializado";
+    }
+
+    public String eliminarUsuario(String documento) {
+        return miUsuarioDao != null ? miUsuarioDao.eliminarUsuario(documento) : "Error: UsuarioDao no inicializado";
+    }
+
+    public UsuarioVo buscarUsuarioPorDocumento(String documento) {
+        return miUsuarioDao != null ? miUsuarioDao.buscarUsuarioPorDocumento(documento) : null;
+    }
+
+    public ArrayList<UsuarioVo> listarUsuarios() {
+        return miUsuarioDao != null ? miUsuarioDao.listarUsuarios() : new ArrayList<>();
+    }
+
+    public String inactivarUsuario(String documento) {
+        return miUsuarioDao != null ? miUsuarioDao.inactivarUsuario(documento) : "Error: UsuarioDao no inicializado";
+    }
+
+    public String activarUsuario(String documento) {
+        return miUsuarioDao != null ? miUsuarioDao.activarUsuario(documento) : "Error: UsuarioDao no inicializado";
+    }
+
+    // ------------------------------------------------------------------------
+    // Métodos para Gestión de Productos
+    // ------------------------------------------------------------------------
+
+    public ProductoVo consultarProducto(String id) {
+        return miProductoDao != null ? miProductoDao.consultarProducto(id) : null;
+    }
+
+    public ProductoVo consultarProductoPorNombre(String nombre) {
+        return miProductoDao != null ? miProductoDao.consultarProductoPorNombre(nombre) : null;
+    }
+
+    public ArrayList<ProductoVo> listarProductos() {
+        return miProductoDao != null ? miProductoDao.listarProductos() : new ArrayList<>();
+    }
+
+    public void registrarProducto(ProductoVo producto) {
+        if (miProductoDao != null) {
+            miProductoDao.registrarProducto(producto);
+        }
+    }
+
+    public void actualizarProducto(ProductoVo producto) {
+        if (miProductoDao != null) {
+            miProductoDao.actualizarProducto(producto);
+        }
+    }
+
+    public void eliminarProducto(String id) {
+        if (miProductoDao != null) {
+            miProductoDao.eliminarProducto(id);
+        }
+    }
+
+    public void setUsuarioDao(UsuarioDao miUsuarioDao) {
+    }
 }
-
-
-

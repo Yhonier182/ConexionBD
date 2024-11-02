@@ -323,6 +323,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
             miUsuarioVo.setUsername(campoUsername.getText().trim());
             miUsuarioVo.setEstado(comboEstado.getSelectedIndex());
 
+
+
+
             String actualiza = miCoordinador.validarCampos(miUsuarioVo) ? miCoordinador.actualizaUsuario(miUsuarioVo) : "mas_datos";
 
             if ("ok".equals(actualiza)) {
@@ -336,6 +339,9 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
         limpiarVentana();
     }
+
+
+
 
     private void eliminaUsuario() {
         String documento = campoDocumento.getText().trim();
@@ -391,15 +397,5 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
         }
     }
 
-    public static void main(String[] args) {
-        JFrame parentFrame = new JFrame();
-        parentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        parentFrame.setSize(400, 300);
-        parentFrame.setLocationRelativeTo(null);
 
-        Coordinador coordinador = new Coordinador();
-        VentanaConsultaIndividual ventana = new VentanaConsultaIndividual(parentFrame, true);
-        ventana.setCoordinador(coordinador);
-        ventana.setVisible(true);
-    }
 }

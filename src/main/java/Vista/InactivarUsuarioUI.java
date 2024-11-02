@@ -178,10 +178,5 @@ public class InactivarUsuarioUI extends JFrame {
         JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            InactivarUsuarioUI ui = new InactivarUsuarioUI();
-            ui.setVisible(true);
-        });
-    }
+
 }

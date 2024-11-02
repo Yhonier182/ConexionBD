@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 import Controlador.Coordinador;
 import Modelo.UsuarioVo;
 import conexion.Conexion;
@@ -23,7 +22,6 @@ public class UsuarioDao {
 		String resultado = "";
 		Connection connection = Conexion.getInstance().getConnection();
 		PreparedStatement preStatement = null;
-
 
 		String consulta = "INSERT INTO usuario (documento, nombre, profesion, edad, direccion, telefono, tipo, password, username, estado)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -57,11 +55,10 @@ public class UsuarioDao {
 					e.printStackTrace();
 				}
 			}
-        }
+		}
 
 		return resultado;
 	}
-
 
 	public UsuarioVo consultarUsuario(String username, String password) {
 		Connection connection = Conexion.getInstance().getConnection();
@@ -69,8 +66,6 @@ public class UsuarioDao {
 		ResultSet result = null;
 
 		UsuarioVo miUsuario = null;
-
-
 
 		String consulta = "SELECT * FROM usuario WHERE username = ? AND password = ? AND estado = true";
 		try {
@@ -97,14 +92,10 @@ public class UsuarioDao {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error en la consulta del usuario: " + e.getMessage());
-		} finally {
-
 		}
 
 		return miUsuario;
 	}
-
-
 
 	public UsuarioVo buscarUsuarioPorDocumento(String documento) {
 		Connection connection = Conexion.getInstance().getConnection();
@@ -112,8 +103,6 @@ public class UsuarioDao {
 		ResultSet result = null;
 
 		UsuarioVo miUsuario = null;
-
-
 
 		String consulta = "SELECT * FROM usuario WHERE documento = ?";
 		try {
@@ -143,9 +132,7 @@ public class UsuarioDao {
 		return miUsuario;
 	}
 
-
-
-	public String actualizaUsuario(UsuarioVo miUsuarioVo ) {
+	public String actualizaUsuario(UsuarioVo miUsuarioVo) {
 		String resultado = "";
 
 		Connection connection = Conexion.getInstance().getConnection();
@@ -169,7 +156,6 @@ public class UsuarioDao {
 
 			resultado = "ok";
 
-
 		} catch (SQLException e) {
 			System.out.println(e);
 			resultado = "error";
@@ -179,10 +165,8 @@ public class UsuarioDao {
 
 
 
-
 	public String eliminarUsuario(String documento) {
 		Connection connection = Conexion.getInstance().getConnection();
-
 
 		String resp = "";
 		try {
@@ -196,15 +180,12 @@ public class UsuarioDao {
 			resp = "ok";
 			statement.close();
 
-
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			resp = "error";
 		}
 		return resp;
 	}
-
-
 
 	public String inactivarUsuario(String documento) {
 		String resultado = "";
@@ -223,7 +204,6 @@ public class UsuarioDao {
 		return resultado;
 	}
 
-
 	public String activarUsuario(String documento) {
 		String resultado = "";
 		Connection connection = Conexion.getInstance().getConnection();
@@ -241,39 +221,35 @@ public class UsuarioDao {
 		return resultado;
 	}
 
-
 	public ArrayList<UsuarioVo> listarUsuarios() {
 		ArrayList<UsuarioVo> resultado = new ArrayList<>();
 		Connection connection = Conexion.getInstance().getConnection();
 		PreparedStatement statement = null;
-		ResultSet resultSet = null;
+		ResultSet result = null;
 
-
+		String consulta = "SELECT * FROM usuario";
 		try {
-			String sql = "SELECT * FROM usuario";
-			statement = connection.prepareStatement(sql);
-			resultSet = statement.executeQuery();
+			statement = connection.prepareStatement(consulta);
+			result = statement.executeQuery();
 
-			while (resultSet.next()) {
-				UsuarioVo usuario = new UsuarioVo();
-				usuario.setDocumento(resultSet.getString("documento"));
-				usuario.setNombre(resultSet.getString("nombre"));
-				usuario.setProfesion(resultSet.getString("profesion"));
-				usuario.setEdad(resultSet.getInt("edad"));
-				usuario.setDireccion(resultSet.getString("direccion"));
-				usuario.setTelefono(resultSet.getString("telefono"));
-				usuario.setTipo(resultSet.getInt("tipo"));
-				usuario.setPassword(resultSet.getString("password"));
-				usuario.setUsername(resultSet.getString("username"));
-				usuario.setEstado(resultSet.getInt("estado"));
-
-				resultado.add(usuario);
+			while (result.next()) {
+				UsuarioVo miUsuarioVo = new UsuarioVo();
+				miUsuarioVo.setDocumento(result.getString("documento"));
+				miUsuarioVo.setNombre(result.getString("nombre"));
+				miUsuarioVo.setProfesion(result.getString("profesion"));
+				miUsuarioVo.setEdad(result.getInt("edad"));
+				miUsuarioVo.setDireccion(result.getString("direccion"));
+				miUsuarioVo.setTelefono(result.getString("telefono"));
+				miUsuarioVo.setTipo(result.getInt("tipo"));
+				miUsuarioVo.setPassword(result.getString("password"));
+				miUsuarioVo.setUsername(result.getString("username"));
+				miUsuarioVo.setEstado(result.getInt("estado"));
+				resultado.add(miUsuarioVo);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al listar los usuarios: " + e.getMessage());
+			System.out.println("Error en la consulta de usuarios: " + e.getMessage());
 		}
+
 		return resultado;
 	}
-
-
 }

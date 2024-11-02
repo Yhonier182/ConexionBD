@@ -4,10 +4,10 @@ import Controlador.Coordinador;
 
 public class Logica {
 
-	final int SELECCION = 0;
-	final int ADMINISTRADOR = 1;
-	final int USUARIO = 2;
-	final int SECRETARIA = 3;
+	public static final int SELECCION = 0;
+	public static final int ADMINISTRADOR = 1;
+	public static final int USUARIO = 2;
+	public static final int SECRETARIA = 3;
 
 	private Coordinador miCoordinador;
 

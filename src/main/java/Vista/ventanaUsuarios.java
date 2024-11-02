@@ -25,6 +25,7 @@ public class ventanaUsuarios extends JFrame {
     public void setCoordinador(Coordinador coordinador) {
         this.miCoordinador = coordinador;
         mostrarTabla();
+        asignarPrivilegios();
     }
 
     private void initComponents() {
@@ -115,12 +116,37 @@ public class ventanaUsuarios extends JFrame {
         tablaUsuarios.getColumnModel().getColumn(9).setPreferredWidth(80);  // Estado
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ventanaUsuarios ventana = new ventanaUsuarios();
-            Coordinador coordinador = new Coordinador();
-            ventana.setCoordinador(coordinador);
-            ventana.setVisible(true);
-        });
+    public void asignarPrivilegios() {
+        int index=miCoordinador.getRolActual();
+        switch (index) {
+            case 1:
+                mostrarTodasLasColumnas();
+                break;
+            case 2:
+                ocultarColumnas(new int[]{6,7, 8, 9});
+                break;
+            case 3:
+                mostrarTodasLasColumnas();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void ocultarColumnas(int[] indices) {
+        for (int index : indices) {
+            tablaUsuarios.getColumnModel().getColumn(index).setMinWidth(0);
+            tablaUsuarios.getColumnModel().getColumn(index).setMinWidth(0);
+            tablaUsuarios.getColumnModel().getColumn(index).setMaxWidth(0);
+            tablaUsuarios.getColumnModel().getColumn(index).setWidth(0);
+        }
+    }
+
+    private void mostrarTodasLasColumnas() {
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            tablaUsuarios.getColumnModel().getColumn(i).setMinWidth(15);
+            tablaUsuarios.getColumnModel().getColumn(i).setMaxWidth(Integer.MAX_VALUE);
+            tablaUsuarios.getColumnModel().getColumn(i).setWidth(100);
+        }
     }
 }

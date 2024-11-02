@@ -64,13 +64,6 @@ public class VentanaListaProductos extends JFrame {
         this.miCoordinador = miCoordinador;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VentanaListaProductos ventanaLista = new VentanaListaProductos();
-            ventanaLista.setVisible(true);
-        });
-    }
-
     public void actualizarTablaProductos() {
     }
 }

@@ -126,7 +126,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
                 botonRegistrar.setVisible(false);
                 botonMostrarProductos.setVisible(true);
                 botonInactivar.setVisible(false);
-                botonMostrarUsuarios.setVisible(false); // Ocultar para Usuario
+                botonMostrarUsuarios.setVisible(true); // Ocultar para Usuario
                 break;
             case 3: // Secretaria
                 botonConsultar.setVisible(true);
@@ -158,15 +158,5 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        // Crear el coordinador
-        Coordinador coordinador = new Coordinador();
 
-        // Crear la ventana principal
-        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-        ventanaPrincipal.setCoordinador(coordinador);  // Pasar el coordinador a la ventana
-
-        // Hacer visible la ventana
-        ventanaPrincipal.setVisible(true);
-    }
 }

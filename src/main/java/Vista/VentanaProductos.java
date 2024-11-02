@@ -261,24 +261,31 @@ public class VentanaProductos extends JFrame {  // Cambiado de JDialog a JFrame
     }
     private void configurarPermisos() {
         int rol=miCoordinador.getRolActual();
+        switch (rol) {
+            case 1: // Administrador
+                btnRegistrar.setVisible(true);
+                btnActualizar.setVisible(true);
+                btnEliminar.setVisible(true);
 
-        boolean puedeModificar = rol == 1 || rol == 3;
-        btnRegistrar.setEnabled(puedeModificar);
-        btnActualizar.setEnabled(puedeModificar);
-        btnEliminar.setEnabled(puedeModificar);
+                btnComprar.setVisible(true);
+                btnCancelarCompra.setVisible(true);
+                break;
+            case 2: // Usuario
+                btnRegistrar.setVisible(false);
+                btnActualizar.setVisible(false);
+                btnEliminar.setVisible(false);
+                break;
+            case 3: // Secretaria
+                btnRegistrar.setVisible(true);
+                btnActualizar.setVisible(true);
+                btnEliminar.setVisible(true);
 
-        boolean puedeComprar = rol == 2 || rol==1 || rol==3;
-        btnComprar.setEnabled(puedeComprar);
-        btnCancelarCompra.setEnabled(puedeComprar);
-    }
-
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Coordinador coordinador = new Coordinador();
-            VentanaProductos ventana = new VentanaProductos(coordinador);
-            ventana.setVisible(true);
-        });
+                btnComprar.setVisible(true);
+                btnCancelarCompra.setVisible(true);
+                break;
+            default:
+                break;
+        }
     }
 
     public void setCoordinador(Coordinador coordinador) {

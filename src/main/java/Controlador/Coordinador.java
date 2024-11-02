@@ -29,7 +29,7 @@ public class Coordinador {
     private ProductoDao miProductoDao;
 
 
-    // Constructor para inicializar DAOs y asignar el coordinador en el DAO de productos
+
     public Coordinador() {
         this.miUsuarioDao = new UsuarioDao();
         this.miProductoDao = new ProductoDao();
@@ -43,9 +43,8 @@ public class Coordinador {
         return rolActual;
     }
 
-    // ------------------------------------------------------------------------
-    // Métodos de Configuración de Ventanas
-    // ------------------------------------------------------------------------
+
+
 
     public void setVentanaPrincipal(VentanaPrincipal miVentana) {
         this.miVentana = miVentana;
@@ -67,9 +66,6 @@ public class Coordinador {
         this.miLogica = miLogica;
     }
 
-    // ------------------------------------------------------------------------
-    // Métodos para Mostrar Ventanas
-    // ------------------------------------------------------------------------
 
     public void mostrarLogin() {
         if (miLogin != null) {
@@ -156,7 +152,7 @@ public class Coordinador {
     // ------------------------------------------------------------------------
 
     public String registrarUsuario(UsuarioVo miUsuarioVo) {
-        return miUsuarioDao != null ? miUsuarioDao.registrarUsuario(miUsuarioVo) : "Error: UsuarioDao no inicializado";
+        return miUsuarioDao != null ? miUsuarioDao.registrarUsuario(miUsuarioVo) : "Error: no inicializado";
     }
 
     public UsuarioVo consultarUsuario(String username, String password) {
@@ -164,11 +160,11 @@ public class Coordinador {
     }
 
     public String actualizaUsuario(UsuarioVo miUsuarioVo) {
-        return miUsuarioDao != null ? miUsuarioDao.actualizaUsuario(miUsuarioVo) : "Error: UsuarioDao no inicializado";
+        return miUsuarioDao != null ? miUsuarioDao.actualizaUsuario(miUsuarioVo) : "Error:  no inicializado";
     }
 
     public String eliminarUsuario(String documento) {
-        return miUsuarioDao != null ? miUsuarioDao.eliminarUsuario(documento) : "Error: UsuarioDao no inicializado";
+        return miUsuarioDao != null ? miUsuarioDao.eliminarUsuario(documento) : "Error: no inicializado";
     }
 
     public UsuarioVo buscarUsuarioPorDocumento(String documento) {
@@ -180,11 +176,11 @@ public class Coordinador {
     }
 
     public String inactivarUsuario(String documento) {
-        return miUsuarioDao != null ? miUsuarioDao.inactivarUsuario(documento) : "Error: UsuarioDao no inicializado";
+        return miUsuarioDao != null ? miUsuarioDao.inactivarUsuario(documento) : "Error: no inicializado";
     }
 
     public String activarUsuario(String documento) {
-        return miUsuarioDao != null ? miUsuarioDao.activarUsuario(documento) : "Error: UsuarioDao no inicializado";
+        return miUsuarioDao != null ? miUsuarioDao.activarUsuario(documento) : "Error:  no inicializado";
     }
 
     // ------------------------------------------------------------------------
@@ -223,4 +219,7 @@ public class Coordinador {
 
     public void setUsuarioDao(UsuarioDao miUsuarioDao) {
     }
+
+
+
 }
